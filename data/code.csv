@@ -1,0 +1,562 @@
+
+ public static void showContextMenu(TextArea textArea, ContextMenu contextMenu, ContextMenuEvent e) {
+ TABLE_ICONS.put(SpecialField.PRINTED, icon);
+ BindingsHelper.bindBidirectional(valueProperty(), temporalAccessorValue,
+ private boolean confirmClose(BasePanel panel) {
+ INTEGRITY_SUCCESS(MaterialDesignIcon.CHECKBOX_MARKED_CIRCLE_OUTLINE) /*css: checkbox-marked-circle-outline */,
+ ExternalFileType toRemove = null;
+ for (Map.Entry<EntryType, TextField> entry : textFields.entrySet()) {
+ return metaData;
+ if (isLoaded(dbFile) || !dbFile.exists()) {
+ for (ParserResult pr : toOpenTab) {
+            tmp = Files.createTempFile("jabrefCb", ".tmp");
+public class DefaultFileUpdateMonitor implements Runnable, FileUpdateMonitor {
+ private final RadioButton autoGroupKeywordsOption = new RadioButton(Localization.lang("Generate groups from keywords in a BibTeX field"));
+ public static <A, B> MappedList<B, A> mapBacked(ObservableList<A> source, Function<A, B> mapper) {
+ public BackgroundTask<V> onFailure(Consumer<Exception> onException) {
+            group.getGroupNode().removeAllChildren();
+ if (basePanel.getBibDatabaseContext().getDatabaseFile().isPresent()) {
+ boolean modificationsAgree = (DuplicateCheck.compareEntriesStrictly(memEntry, diskEntry) > 1);
+ return AutoCompleteFirstNameMode.BOTH;
+ if (!Files.isDirectory(directory)) {
+ void storeSettings();
+ List<String> names = getSortedReferenceMarks(nameAccess);
+        save();
+ public MergeEntries(BibEntry entryLeft, BibEntry entryRight, String headingLeft, String headingRight, BibDatabaseMode type) {
+            autoCompleter.setShowOnFocus(true);
+ public boolean dragDroppedInChosenCell(PreviewLayout targetLayout, Dragboard dragboard) {
+public class BindingsHelper {
+ public static List<Text> formatToTexts(String original, TextReplacement... replacements) {
+ public void copyLog(List<LogEventViewModel> messages) {
+ JabRefGUI.getMainFrame().getDialogService().notify(Localization.lang("Copied") + " '" + JabRefDialogService.shortenDialogMessage(keyAndLink) + "'.");
+ if (identicalFields.contains(field)) {
+public class BibEntrySuggestionProvider extends SuggestionProvider<BibEntry> implements AutoCompleteSuggestionProvider<BibEntry> {
+ MERGE_ENTRIES(MaterialDesignIcon.COMPARE), /* css: compare */
+ public void addAbbreviation(String name, String abbreviation) {
+ private class EditAction extends SimpleCommand {
+ public ObjectBinding<T> orElse(T other) {
+@Deprecated
+ if (pr.getFile().filter(path -> path.getAbsolutePath().equals(focusedFile)).isPresent()) {
+abstract class FieldsEditorTab extends EntryEditorTab {
+                dups = this.duplicates.poll(100, TimeUnit.MILLISECONDS);
+ public void clearLog() {
+ public boolean setNewBinding(KeyEvent evt) {
+        base.setPreamble(oldValue);
+ FadeTransition fadeIn = new FadeTransition(Duration.millis(100), imageView);
+ DEFAULT_GROUP_ICON_COLORED(MaterialDesignIcon.PLAY),
+ public static SearchDescriber getSearchDescriberFor(SearchQuery searchQuery) {
+ private int replaceItem(BibEntry entry, NamedCompound compound) {
+            field = StandardField.URL;
+ public SortedMap<KeyBinding, String> getKeyBindings() {
+ ContextMenu fetcherMenu = new ContextMenu();
+                            importHandler.getLinker().copyFilesToFileDirAndAddToEntry(entry, files);
+ private static void addGroups(GroupTreeNode newGroups, CompoundEdit ce) {
+ public List<FieldChange> addEntriesToGroup(List<BibEntry> entries) {
+ return false;
+    }
+ String issueBody = systemInfo + "\n\n" + howToReproduce + "\n\n" + "Paste your log details here.";
+    }
+ if (end < line.length()) {
+ private static ExternalFileTypes singleton;
+public class CustomLocalDragboard {
+ public void importButtonClicked() {
+public class FromAuxDialog extends BaseDialog<Void> {
+ public static void showParserResultWarningDialog(final ParserResult parserResult, final JabRefFrame jabRefFrame,
+ int[] permutation = new int[to - from];
+ PseudoClass rootPseudoClass = PseudoClass.getPseudoClass("root");
+        }
+            entries = frame.getCurrentBasePanel().getSelectedEntries();
+ int row = 2;
+ public void putPreviewLayouts(List<PreviewLayout> previewLayouts) {
+                entries.remove(entry);
+        other = findInternalDuplicate(entry);
+            } else if (result == DuplicateResolverDialog.DuplicateResolverResult.KEEP_RIGHT) {
+ public Image render(int width, int height) {
+ if (REMOTE_LINK_PATTERN.matcher(link).matches()) {
+ List<Exporter> exporters = Globals.exportFactory.getExporters().stream()
+ new SharedDatabasePreferences(context.getDatabase().generateSharedDatabaseID())
+ Globals.protectedTermsLoader = new ProtectedTermsLoader(Globals.prefs.getProtectedTermsPreferences());
+ private static Label getAssociatedNode(MenuItem menuItem) {
+    }
+ private void setCurrentAbbreviationNameAndAbbreviationIfValid(String name, String abbreviation) {
+ int maxAuthorsFirst = style.getIntCitProperty(OOBibStyle.MAX_AUTHORS_FIRST);
+        textFlow.getChildren().add(TooltipTextUtil.createText(String.format("%s ", Localization.lang("This search contains entries in which")), TooltipTextUtil.TextType.NORMAL));
+        } else if (entries.parallelStream().anyMatch(BibEntry::hasCiteKey)) {
+ void performAction(BasePanel panel, ParserResult pr);
+ private CheckBoxTreeItem<FileNodeWrapper> searchDirectory(File directory, UnlinkedPDFFileFilter ff) {
+ private void addLinkedFileFromURL(URL url, BibEntry entry, Path targetDirectory) {
+        textArea.setPasteActionHandler(() -> textArea.setText(new CleanupURLFormatter().format(new TrimWhitespaceFormatter().format(textArea.getText()))));
+ public SuggestionProviderString(Callback<T, String> stringConverter) {
+        xChildNamed.setName(OOBibBase.BIB_SECTION_NAME);
+ ParserResult bibtexResult = mergeImportResults(imports);
+            }
+ public void addNewFile() {
+    }
+ if (!newerVersion.isPresent() || (newerVersion.get().equals(toBeIgnored) && !manualExecution)) {
+ double matchWithTmp = DuplicateCheck.compareEntriesStrictly(memEntry, tmpEntry);
+ if (!xNamedBookmarks.hasByName(name)) {
+ if (!validSettings()) {
+ break;
+ PLAIN_TEXT_IMPORT_DONE(MaterialDesignIcon.CHECKBOX_MARKED_CIRCLE_OUTLINE) /* checkbox-marked-circle-outline */,
+ public void setValues(AbstractBibtexKeyPattern keyPattern) {
+ public static <T> SuggestionProvider<T> create(Collection<T> possibleSuggestions) {
+ if (!Files.exists(directory)) {
+ AUTO_LINKED_FILE(MaterialDesignIcon.BRIEFCASE_CHECK) /*css: briefcase-check */,
+ protected static ClipboardContent processRtf(List<String> citations) {
+ final PushToApplicationAction pushToApplicationAction = pushToApplicationsManager.getPushToApplicationAction();
+ public static List<MenuItem> getDefaultContextMenuItems(TextInputControl textInputControl) {
+            mode = Globals.prefs.getDefaultBibDatabaseMode();
+ SearchDisplayMode(Supplier<String> displayName, Supplier<String> toolTipText) {
+        } else {
+                cursor.collapseToEnd();
+ CleanupWorker cleaner = new CleanupWorker(panel.getBibDatabaseContext(), preferences.getCleanupPreferences(
+ if (toRemove != null) {
+ private class InputMethodRequestsObject implements InputMethodRequests {
+public class UndoablePreambleChange extends AbstractUndoableJabRefEdit {
+ ImportFormatPreferences importFormatPreferences = Globals.prefs.getImportFormatPreferences();
+ ProgressIndicator progress = new ProgressIndicator();
+            ensureCorrectJavaVersion();
+ public String getIconName() {
+                    toOpenTab.add(pr);
+ return;
+            keypatterns.setDefaultValue(text);
+ String pairs[] = null;
+ List<Formatter> caseChangers = new ArrayList<>();
+ List<ImportFormatReader.UnknownFormatImport> imports = new ArrayList<>();
+public class ViewModelListCellFactory<T> implements Callback<ListView<T>, ListCell<T>> {
+    }
+                    }
+public class WaitForSaveFinishedDialog {
+            basePanel.closeBottomPane();
+ Globals.REMOTE_LISTENER.openAndStart(new JabRefMessageHandler(), remotePreferences.getPort());
+public class PersistenceVisualStateTable {
+        protectDisableProperty.setValue(isShared);
+                command = command.replace("%DIR", absolutePath);
+ if (!cssUri.toString().contains("jar")) {
+ LOGGER.debug("Mode LINK");
+ if (command instanceof SimpleCommand) {
+ public class JournalAbbreviationsNameTableEditingCell extends TableCell<AbbreviationViewModel, String> {
+                }
+ if (keywordGroupRegExp.isSelected()) {
+ private GroupHierarchyType getContext() {
+        group.getGroupNode().removeEntriesFromGroup(stateManager.getSelectedEntries());
+        flow.estimatedScrollYProperty().addListener((observable, oldValue, newValue) -> scrollY.setValue(newValue));
+ private void initialize() {
+interface PreferencesTab {
+ void pushEntries(BibDatabaseContext database, List<BibEntry> entries, String keyString);
+ try {
+public class MassSetFieldsAction extends SimpleCommand {
+            root.setSelected(false);
+                    fileLinker.copyFilesToFileDirAndAddToEntry(entry, files);
+                mustTestCharFormat = false; // need to do this only once
+ Bounds anchorBounds = row.getBoundsInParent();
+ public static void openConsole(File file) throws IOException {
+            root.setGroup(DefaultGroupsFactory.getAllEntriesGroup());
+ public boolean quit() {
+        currentResults.setPrefWidth(150);
+public abstract class MapBasedEditorViewModel<T> extends OptionEditorViewModel<T> {
+        setWrapText(true);
+public class PersonNameSuggestionProvider extends SuggestionProvider<Author> implements AutoCompleteSuggestionProvider<Author> {
+ public StyleSpans<Collection<String>> computeHighlighting(String text) {
+ public void setValues() {
+ LOGGER.debug("Mode MOVE");
+ Map<String,Double> columnWidths = new HashMap<>();
+ private void addImportedEntries(final BasePanel panel, final List<BibEntry> entries) {
+            journalAbbreviationLoader.update(abbreviationsPreferences);
+ String dialogTitle;
+class JabRefAction extends org.controlsfx.control.action.Action {
+ public BooleanProperty useFileBrowserDefaultProperty() { return this.useFileBrowserDefaultProperty; }
+        resolveStringsBibTexProperty.setValue(!resolveStringsAllProperty.getValue());
+ FIND_DUPLICATES(MaterialDesignIcon.CODE_EQUAL), /*css: code-equal */
+ String sOffice = System.getProperty("os.name").startsWith("Windows") ? "soffice.exe" : "soffice";
+ BasePanel panel = getCurrentBasePanel();
+ CONNECT_OPEN_OFFICE(MaterialDesignIcon.OPEN_IN_APP) /*css: open-in-app */,
+            background = new Rectangle(getDesiredWidth(), getDesiredHeight());
+ protected abstract void initParameters();
+ private final GroupTreeNode m_subtreeBackup;
+ private void onDatabaseChanged(ListChangeListener.Change<? extends BibEntry> change) {
+ for (int i = 0;; ++i) {
+ boolean mustTestCharFormat = style.isFormatCitations();
+ REQUIRED(MaterialDesignIcon.LABEL), /*css: label */
+ Field privateStringField = TableView.class.getDeclaredField("contentWidth");
+ private TableColumn<BibEntryTableViewModel, Field> createUrlOrDoiColumn(JabRefIcon icon, Field firstField, Field secondField) {
+ protected abstract Comparator<T> getComparator();
+ boolean emptyKeys = false;
+        text = viewModel.userSpecificFileDirectoryProperty().getValue();
+                    fileLinker.addFilesToEntry(entry, files);
+public abstract class DocumentPageViewModel {
+class ConversionMenu extends Menu {
+            refresh();
+            } else {
+ public String getInformation(boolean includeMissingEntries) {
+ public void saveJournalAbbreviationFiles() {
+ public BackgroundTask<V> onSuccess(Consumer<V> onSuccess) {
+package org.jabref.gui.autocompleter;
+ try {
+ private void updateView() {
+public class UndoableFieldChange extends AbstractUndoableJabRefEdit {
+public abstract class AbstractPushToApplication implements PushToApplication {
+ throw new IllegalStateException(parserResult.getErrorMessage());
+@Deprecated
+ public static Supplier<List<MenuItem>> getCleanupURLMenu(TextArea textArea) {
+        column.setCellValueFactory(cellData -> EasyBind.monadic(cellData.getValue().getField(firstField)).map(x -> firstField).orElse(EasyBind.monadic(cellData.getValue().getField(secondField)).map(x -> secondField)));
+ try {
+ return Collections.emptyList();
+ public boolean isExternalFileTypeByExt(String extension) {
+        }
+
+ try {
+ Node tabHeaderArea = ((TabPaneSkin) this.tabbedPane.getSkin())
+ for (TextField field : textFields.values()) {
+public class OptionalObjectProperty<T> extends SimpleObjectProperty<Optional<T>> {
+ public static void showContextMenu(TextField textField, ContextMenu contextMenu, ContextMenuEvent e) {
+ AUTO_FILE_LINK(MaterialDesignIcon.FILE_FIND) /*css: file-find */,
+public class JabRefDesktop {
+ public <T> Future<T> execute(Callable<T> command) {
+ JabRefGUI.getMainFrame().addParserResult(pr, focusPanel)
+                    tabbedPane.getTabs().get(i).setText(getBasePanelAt(i).getTabTitle());
+ if (application.requiresBibtexKeys()) {
+ public boolean isResolved(BibEntry entry) {
+    }
+ for (KeyBinding keyBinding : KeyBinding.values()) {
+ private void updateColumnPreferences() {
+ GroupTreeNode groupNode = group.getGroupNode();
+ public void createFileObjects() {
+ if (Globals.prefs.getBoolean(JabRefPreferences.FX_FONT_RENDERING_TWEAK)) {
+ public static void runAndWaitInJavaFXThread(Runnable action) {
+public class JabRefMain extends Application {
+ public static final XComponentContext bootstrap(String[] argArray, URLClassLoader loader) throws BootstrapException {
+}
+ Optional<Path> fileDir = databaseContext.getFirstExistingFileDir(filePreferences);
+ LOGGER.debug("Mode COPY");
+ if (desktopSession != null) {
+ private void updateAfterPreferenceChanges() {
+ @Override
+ ButtonType replaceEntries = new ButtonType(Localization.lang("Merge entries"), ButtonBar.ButtonData.OK_DONE);
+ public BooleanProperty markTimestampProperty() { return this.markTimestampProperty; }
+public class UiThreadObservableList<E> implements ObservableList<E> {
+ public <T> List<Future<T>> executeAll(Collection<Callable<T>> tasks) {
+ public void selectLastJournalFile() {
+ public void deleteAbbreviation() {
+            names = sortedReferenceMarks;
+ public static <T> ObservableList<T> forUI(ObservableList<T> list) {
+        stopRemoteThread();
+ if (!xmpEntriesInFile.isEmpty()) {
+        base.removeString(string.getId());
+ for (ExternalFileType type : unchanged) {
+ public boolean validSettings() {
+ for (int i = 0; i < visibleTabs.size(); i++) {
+            updateAllTabTitles();
+public class ActionFactory {
+public class FetchAndMergeEntry {
+ if (newGroups.getGroup() instanceof AllEntriesGroup) {
+ Button search = new Button(Localization.lang("Search"));
+            tableView.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
+ public static <V> V runInJavaFXThread(Callable<V> callable) {
+            fields.add(InternalField.KEY_FIELD);
+ List<String> tmp = new ArrayList<>();
+ List<String> names = sortedReferenceMarks;
+ for (BibEntry entry : entries) {
+public class DefaultTaskExecutor implements TaskExecutor {
+ if (event.getCode() == KeyCode.ENTER) {
+                            refKeys.get(marker).add(currentKey);
+ if (toRemove != null) {
+public class JabRefFrame extends BorderPane {
+ try {
+public class DetectOpenOfficeInstallation {
+            currentPage.set(
+        setPageWidth(desiredPageDimension.getWidth(Math.sqrt(2)) + delta);
+ List<BibEntry> selectedEntries = basePanel.getSelectedEntries();
+public class ManageJournalAbbreviationsView extends BaseDialog<Void> {
+ Optional<BasePanel> panel = getBasePanelList().stream()
+public class UndoableChangeType extends AbstractUndoableJabRefEdit {
+ public BooleanProperty openLastStartupProperty() { return openLastStartupProperty; }
+ public void setWindowTitle() {
+ if (panel != null) {
+ this.moveTo(target);
+ BibEntryWriter bibtexEntryWriter = new BibEntryWriter(
+ public void openFiles(List<Path> filesToOpen, boolean raisePanel) {
+ if (preferences.isMrdlibAccepted()) {
+ String extensionString = exporter.getFileType().getExtensions().get(0);
+ private final int m_editType;
+            mimeType = "";
+import java.util.HashMap;
+ if (defaultApplicationSelectedProperty.getValue() || application.isEmpty()) {
+ private List<Path> getFileListFromNode(CheckBoxTreeItem<FileNodeWrapper> node) {
+ PICTURE(MaterialDesignIcon.FILE_IMAGE) /*css: file-image */,
+ public String getConstant() {
+public class CopyDoiUrlAction extends SimpleCommand {
+ TypedBibEntry typedEntry = new TypedBibEntry(entry, databaseContext.getMode());
+ for (int j = 0; j < cEntries.length; j++) {
+ <V> Future<V> execute(BackgroundTask<V> task);
+ LOGGER.debug("Mode LINK");
+ private void doCleanup(CleanupPreset preset, BibEntry entry, NamedCompound ce) {
+ for (int i = 0; i < tabbedPane.getTabs().size(); i++) {
+ private void updateExternalFileTypes() {
+ public void notifyAboutFocus(BibEntry entry) {
+ break;
+            dialogService.showErrorDialogAndWait(Localization.lang("File not found"), Localization.lang("Could not find file '%0'.", linkedFile.getLink()));
+ public void editGroup(GroupNodeViewModel oldGroup) {
+ Path directory = file.toAbsolutePath().getParent();
+ public List<String> parseRefMarkName(String name) {
+ this.draggedItem.setExpanded(this.draggedItem.isExpanded());
+ if (!this.getChildren().contains(moreLink)) {
+ BibDatabaseDiff differences = BibDatabaseDiff.compare(referenceDatabase, databaseOnDisk);
+            root.setGroup(changedGroups.getGroup());
+            mimeType = val[2];
+ for (BibDatabase loopDatabase : databases) {
+                entries.add(diag.getMergedEntry());
+ List<FieldChange> changes = SpecialFieldsUtils.updateField(specialField, value, be, nullFieldIfValueIsTheSame, Globals.prefs.isKeywordSyncEnabled(), Globals.prefs.getKeywordDelimiter());
+        m_subtreeBackup = editType != UndoableAddOrRemoveGroup.REMOVE_NODE_KEEP_CHILDREN ? editedNode.getNode()
+ protected static ClipboardContent processHtml(List<String> citations) {
+ LinkedFileViewModel linkedFileViewModel = new LinkedFileViewModel(linkedFiles.get(0), entry.getEntry(), database, Globals.TASK_EXECUTOR, dialogService, Globals.prefs.getXMPPreferences(), Globals.prefs.getFilePreferences(), externalFileTypes);
+ new JabRefGUI(mainStage, argumentProcessor.getParserResults(), argumentProcessor.isBlank());
+        }
+ for (int i = 0; (i < bibDatabases.size()) && (i < mainFrame.getBasePanelCount()); i++) {
+ public ZipFileChooser(FileSystem zipFile) throws IOException {
+                    dragExpansionHandler.expandGroup(row.getTreeItem());
+                        factory.createMenuItem(StandardActions.IMPORT_INTO_CURRENT_LIBRARY, new ImportCommand(this, false)),
+ SUCCESS(MaterialDesignIcon.CHECK_CIRCLE),
+ List<BibEntry> entriesToAdd = Globals.clipboardManager.extractData();
+ XTextContent xChildSection = UnoRuntime.queryInterface(XTextContent.class, xChildNamed);
+ public void setProgressBarVisible(final boolean visible) {
+ private static String pathToClass(String basePath, Path path) {
+ ClipboardContent content = new ClipboardContent();
+ ArrayList<MenuItem> items = new ArrayList<>();
+ String[] split = file.get().getFileName().toString().split("\\.");
+public interface GUIPostOpenAction {
+        warnBeforeOverwriting.setDisable(dontOverwrite.isSelected());
+public final class ApplicationInsightsLogEvent extends ApplicationInsightsEvent {
+        xSet.insert(xImpLoader.activate("com.sun.star.comp.connections.Connector", null, null, null));
+ return JabRefIcons.GROUP_INTERSECTION.getGraphicNode();
+ boolean first = false;
+public abstract class SuggestionProvider<T> implements Callback<ISuggestionRequest, Collection<T>> {
+ private Optional<Version> getNewVersion() throws IOException {
+ private void showConnectionError(Exception exception, boolean manualExecution) {
+ FILE_MULTIPLE(MaterialDesignIcon.FILE_MULTIPLE), /*css: file-multiple */
+ private static final String GOOGLE_SEARCH_EXP = "^https?://(?:www\\.)?google\\.[\\.a-z]+?/url.*";
+            keywords.removeAll(keywordsToRemove);
+ EXPORT_TO_CLIPBOARD(MaterialDesignIcon.CLIPBOARD_ARROW_LEFT) /*css: clipboard-arrow-left */,
+ public static final XComponentContext defaultBootstrap_InitialComponentContext(String ini_file, Map<String, String> bootstrap_parameters) throws Exception {
+ DATE_PICKER(MaterialDesignIcon.CALENDAR), /* css: calendar */
+            row.setOnDragDetected(event -> {
+ ChangeScanner scanner = new ChangeScanner(database, referenceFile);
+ private static UndoableEdit massAppendField(Collection<BibEntry> entries, Field field, String textToAppend) {
+ try {
+ if (changed) {
+ String focusedFile = bibDatabases.stream()
+ public boolean acceptableDrop(Dragboard dragboard) {
+ BibtexString bs = new BibtexString(label, disk);
+ private ScrollPane getPrivacyDialog(BibEntry entry) {
+ if (leftString.isPresent()) {
+ private void initialize() {
+ ContextMenu typeMenu = new ChangeEntryTypeMenu().getChangeEntryTypePopupMenu(entry, databaseContext, undoManager);
+ private ObjectProperty<IconTheme.JabRefIcons> glyph;
+ WARNING(MaterialDesignIcon.ALERT),
+ private final GroupTreeNodeViewModel m_groupsRootHandle;
+public class VersionWorker {
+ if (!resultDatabase.getEntryByKey(crossref).isPresent()) {
+                rebuildBibTextSection(allBases, style);
+ public JabRefAction(Action action, Command command, KeyBindingRepository keyBindingRepository, Sources source) {
+public class SaveDatabaseAction {
+ public static Supplier<List<MenuItem>> getDefaultMenu(final TextInputControl textInput) {
+ for (int i = 0; i < 6; i++) {
+ List<String> getRestartWarnings();
+ private AutoCompletionTextInputBinding(final TextInputControl textInputControl,
+ return Date.parse(string).map(Date::toTemporalAccessor).orElse(null);
+ Optional<DocumentTitleViewModel> selectedDocument = dialogService.showChoiceDialogAndWait(Localization.lang("Select document"), Localization.lang("Found documents:"), Localization.lang("Use selected document"), viewModel);
+ private static BufferedImage resize(BufferedImage img, int newWidth, int newHeight) {
+        fileChoice.itemsProperty().addListener(
+ @SuppressWarnings("unused")
+ private static void setGraphic(MenuItem node, Action action) {
+ if (InternalField.TYPE_HEADER.equals(field) || InternalField.OBSOLETE_TYPE_HEADER.equals(field)
+ public static final int REMOVE_NODE_AND_CHILDREN = 2;
+package org.jabref.gui.autocompleter;
+        updateA.accept(propertyB.getValue());
+ private final Set<ExternalFileType> externalFileTypes = new TreeSet<>(Comparator.comparing(ExternalFileType::getName));
+ private void setupClearButtonField(CustomTextField customTextField) {
+ return true;
+ if (remoteClient.sendCommandLineArguments(args)) {
+ ArgumentProcessor argumentProcessor = new ArgumentProcessor(arguments, ArgumentProcessor.Mode.INITIAL_START);
+ while (preferences.get(JabRefPreferences.CUSTOM_TAB_NAME + "_def" + i) != null) {
+ BackgroundTask.wrap(() -> openIt(file, dialog.importEntries(), dialog.importStrings(), dialog.importGroups(), dialog.importSelectorWords()))
+                initialDirectory = null;
+ String[] pairs = query.split("&");
+ for (BibEntry entry : entries) {
+            dialogService.notify(Localization.lang("Modified group \"%0\".", group.getName()));
+ public void newFile(Path file) {
+public class CreateModifyExporterDialogViewModel extends AbstractViewModel {
+ throw new ConnectionLostException(ex.getMessage());
+ INTEGRITY_FAIL(Color.RED, MaterialDesignIcon.CLOSE_CIRCLE), /*css: close-circle */
+public class SmartConstrainedResizePolicy implements Callback<TableView.ResizeFeatures, Boolean> {
+ Collection<BibEntry> bibEntries = (Collection<BibEntry>) super.complete(request);
+ public void putBibEntries(List<BibEntry> entries) {
+@Deprecated
+        }
+ Map<String, List<String>> refKeys = new HashMap<>();
+ while (componentEnumeration.hasMoreElements()) {
+                }
+            result = OpenDatabase.loadDatabase(diskdb.toAbsolutePath().toString(), importFormatPreferences, Globals.getFileUpdateMonitor());
+public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> {
+ public static LinkedFile fromFile(Path file, List<Path> fileDirectories, ExternalFileTypes externalFileTypesFile) {
+ public static <T> SuggestionProvider<T> create(Callback<T, String> stringConverter, Collection<T> possibleSuggestions) {
+                entries.remove(entry);
+ public void updateFont() {
+class UpdateTimestampListener {
+            visibleComponents.add(component);
+ throw new UndefinedCharacterFormatException(charStyle);
+public class CurrentThreadTaskExecutor implements TaskExecutor {
+            openExternalFilePlatformIndependent(type, link);
+ private class DocumentViewerPage implements Cell<DocumentPageViewModel, StackPane> {
+ private static UndoableEdit massSetField(Collection<BibEntry> entries, Field field, String textToSet,
+            xViewCursor.gotoRange(position, false);
+public class PreviewViewer extends ScrollPane implements InvalidationListener {
+ return true;
+ LocalDate date = dateTime.query(TemporalQueries.localDate());
+ for (int i = 0; i < pages.getCount(); i++) {
+ String[][] vals = StringUtil
+ Process p = Runtime.getRuntime().exec(cmdArray);
+ List<Path> files = entry.getFiles().stream()
+ void setValues();
+ PreferencesMigrations.runMigrations();
+public class ValueTableCellFactory<S, T> implements Callback<TableColumn<S, T>, TableCell<S, T>> {
+        prefs.putKeyPattern(keypatterns);
+ private final List<Integer> m_subtreeRootPath;
+public final class MappedList<A, B> extends TransformationList<A, B> {
+ List<EntryEditorTab> toBeRemoved = tabs.stream().filter(tab -> !tab.shouldShow(entry)).collect(Collectors.toList());
+        cleanupEnabled.selectedProperty().addListener(new EnablementStatusListener<>(fieldFormatterCleanups.isEnabled()));
+                            importHandler.getLinker().addFilesToEntry(entry, files);
+ this.dragStarted = System.currentTimeMillis();
+ try {
+ String filePath = file.get().toString();
+ Path getApplicationDirectory();
+public class ConnectToSharedDatabaseCommand extends SimpleCommand {
+ if (query == null) {
+ void addBuiltInLists() {
+ if (decode.matches(URL_EXP)) {
+ List<EntryEditorTab> toBeRemoved = tabs.stream().filter(tab -> !tab.shouldShow(entry)).collect(Collectors.toList());
+                    event.consume();
+ INTEGRITY_WARN(MaterialDesignIcon.ALERT_CIRCLE), /*css alert-circle */
+public class UnknownExternalFileType implements ExternalFileType {
+ if (i == 600) {
+ public static TextFormatter<String> getIntegerTextFormatter() {
+ public static String formatName(final String nameToFormat) {
+ FILE_WORD(MaterialDesignIcon.FILE_WORD), /*css: file-word */
+ if (!refKeys.get(marker).contains(currentKey)) {
+ List<Future<Boolean>> futures = JabRefExecutorService.INSTANCE.executeAll(tasks);
+public class BackupUIManager {
+    }
+ private static final int WARNING_LIMIT = 5;
+class NoDocumentException extends Exception {
+ String[] cmdArray = new String[argArray.length + 2];
+ BackgroundTask<Image> generateImage = BackgroundTask
+ private boolean isExistURLorDOI(List<BibEntry> selectEntryList) {
+public class UiThreadStringProperty extends StringProperty {
+ if (prefs.getBoolean(JabRefPreferences.OPEN_LAST_EDITED)) {
+public class ManageProtectedTermsDialog extends BaseDialog<Void> {
+ if ((commandPath == null) || commandPath.trim().isEmpty()) {
+            } else if (radioButtons.get(field).get(2).isSelected()) {
+ MutableLogEvent copy = new MutableLogEvent();
+ Object[] permutedPart = new Object[to - from];
+ return Bindings.createBooleanBinding(() -> !source.isEmpty() && source.stream().allMatch(predicate), source);
+ if ((!valToMove.isPresent()) || valToMove.get().isEmpty()) {
+ Globals.prefs.put(JabRefPreferences.DEFAULT_BIBTEX_KEY_PATTERN, defaultPat.getText());
+ public void activeReferenceChanged(ReferenceViewModel reference) {
+            selectDocument.setDisable(false);
+ ContextMenu menu = new ContextMenu();
+ private final TextField nameField = new TextField();
+ @SuppressWarnings("unchecked")
+ public static void openBrowser(String url) throws IOException {
+ public MergeEntries(BibEntry entryLeft, BibEntry entryRight, BibDatabaseMode type) {
+ DecorationPane root = new DecorationPane();
+ READ_STATUS(MaterialDesignIcon.EYE), /*css: eye */
+ if (selectedKeyBinding.isNull().get()) {
+ public String getDisplayText() {
+ if (!Files.isDirectory(directory)) {
+ private void setupKeyBindings() {
+ public static XMultiServiceFactory createSimpleServiceManager() throws Exception {
+                range = footer.getAnchor();
+            lp = new File(commandPath + ".in");
+            cache.remove(entry);
+        button.graphicProperty().unbind();
+        groupTree.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+            preferences.setWorkingDir(path);
+ this.executorService.shutdown();
+ private void applyPreferences() {
+class CreationException extends Exception {
+ public BooleanProperty autosaveLocalLibrariesProperty() { return autosaveLocalLibraries; }
+ public void setProgressBarIndeterminate(final boolean value) {
+                dialogService.notify(Localization.lang("Unable to save library"));
+ for (Field field : originalFields) {
+ if (start > 0) {
+ EntryType oldType = originalEntry.getType();
+ int tabNumber = 0;
+ public void setIconName(String name) {
+ if (specialField == SpecialField.READ_STATUS) {
+ public AbbreviationsFileViewModel(List<AbbreviationViewModel> abbreviations, String name) {
+ Method m = TextFields.class.getDeclaredMethod("setupClearButtonField", TextField.class, ObjectProperty.class);
+ ExternalFileType type = CustomExternalFileType.buildFromArgs(val);
+                updateSortedReferenceMarks();
+ public static void openExternalViewer(BibDatabaseContext databaseContext, String initialLink, Field initialField)
+ public ListProperty<Language> languagesListProperty() { return this.languagesListProperty; }
+ private void populateTable() {
+            stringBuilder.append(this.replaceString); // Insert s2
+ new MergeReviewIntoCommentAction(),
+ return new Label(Localization.lang("Metadata change"));
+@Deprecated
+ VBox container = new VBox();
+ boolean italicize = style.getBooleanCitProperty(OOBibStyle.ITALIC_ET_AL);
+            dialogService.showInformationDialogAndWait(
+ public abstract void makeChange(BibDatabaseContext database, NamedCompound undoEdit);
+ BindingsHelper.bindContentBidirectional(
+ RemoteClient remoteClient = new RemoteClient(remotePreferences.getPort());
+ FILE_TEXT(MaterialDesignIcon.FILE_DOCUMENT), /*css: file-document */
+ public static void openBrowserShowPopup(String url) {
+ public BackgroundTask<V> onFinished(Runnable onFinished) {
+public class TagBar<T> extends HBox {
+ private void saveExternalFilesList() {
+ TABLE_ICONS.put(StandardField.URL, icon);
+ if (searchField.getText().isEmpty()) {
+ SpecialFieldViewModel priorityViewModel = new SpecialFieldViewModel(SpecialField.PRIORITY, undoManager);
+ MOVE_TAB_ARROW(MaterialDesignIcon.ARROW_UP_BOLD), /*css:  arrow-up-bold */
+ public BasePanel getCurrentBasePanel() {
+ BibtexKeyPatternPreferences prefs = jabRefPreferences.getBibtexKeyPatternPreferences();
+public class IconValidationDecorator extends GraphicValidationDecoration {
+ public abstract Node description();
+ if (group.getGroupNode().getGroup() instanceof ExplicitGroup) {
+ return node.children.getSource().stream().anyMatch(this::showNode);
+ if (!toAdd.isEmpty()) {
+ return icon.getGraphicNode();
+ if (!overwriteKeys) {
+            }
+ public static void showParserResultWarningDialog(final ParserResult parserResult, final JabRefFrame jabRefFrame) {
+ @SuppressWarnings("unchecked")
+ URL url = new URL(link);
+ Globals.prefs.put(JabRefPreferences.LAST_USED_EXPORT, exporter.getName());
+ XNamed xChildNamed;
+public class Tag<T> extends HBox {
+        group.getGroupNode().addEntriesToGroup(stateManager.getSelectedEntries());
+            dialogService.notify(Localization.lang("Added group \"%0\".", group.getName()));
+public class CopyBibTeXKeyAndLinkAction implements BaseAction {
+ for (ExternalFileType fileType : ExternalFileTypes.getDefaultExternalFileTypes()) {
+ if (!lp.exists() || !lp.canWrite()) {
+ private String getLogMessagesAsString(List<LogEventViewModel> messages) {
+ public <T> BackgroundTask<T> then(Function<V, BackgroundTask<T>> nextTaskFactory) {
+ public void addNewSubgroup(GroupNodeViewModel parent) {
+ return "";
+ final NamedCompound compound = new NamedCompound(Localization.lang("Autogenerate BibTeX keys"));
+ String text = defaultPat.getText();
+ public AppearancePrefsTab(DialogService dialogService, JabRefPreferences prefs) {
+ GroupTreeNode removedNode = cursor
+ public void clearSuggestions() {
+        entries = basePanel.getSelectedEntries();
+ public void saveEverythingAndUpdateAutoCompleter() {
+                result.getDatabase().clearSharedDatabaseID();
+ private static BibEntry bestFit(BibEntry targetEntry, List<BibEntry> entries) {
+ break;
+ protected final TextField defaultPat = new TextField();
+ Optional<DocumentViewerPage> inMiddleOfViewport = Optional.empty();
+ protected String getCommandName() {
+ final BuildInfo buildInfo = Globals.BUILD_INFO;
+ public static void showContextMenu(TextArea textArea, ContextMenu contextMenu, ContextMenuEvent e) {
+ TABLE_ICONS.put(SpecialField.PRINTED, icon);

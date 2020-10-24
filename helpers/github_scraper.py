@@ -10,7 +10,7 @@ LINE_COMMENT_KEY = '//'
 
 def get_code_line(link, line_num):
     result = requests.get(link).text
-    time.sleep(10)
+    time.sleep(5)
     soup = bs.BeautifulSoup(result, 'lxml')
     line_id = "LC" + str(line_num)
     tag = soup.find(id=line_id)
@@ -59,6 +59,7 @@ begin_lines = data['begin_line'].tolist()
 types = data['type'].tolist()
 
 lines = []
+
 for i in range(0, len(paths)):
     print('-------')
     print(paths[i])
@@ -72,6 +73,9 @@ for i in range(0, len(paths)):
         line = handle_block_comment(paths[i], begin_lines[i] + 1)
     print(line)
     lines.append(line)
+    f = open("./../data/comments_test.csv", "a")
+    f.write(line + '\n')
+    f.close()
 
 df2 = pd.DataFrame(np.array(lines),
                    columns=['comments'])
