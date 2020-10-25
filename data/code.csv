@@ -560,3 +560,4 @@ public class CopyBibTeXKeyAndLinkAction implements BaseAction {
  final BuildInfo buildInfo = Globals.BUILD_INFO;
  public static void showContextMenu(TextArea textArea, ContextMenu contextMenu, ContextMenuEvent e) {
  TABLE_ICONS.put(SpecialField.PRINTED, icon);
+
