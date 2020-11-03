@@ -89,6 +89,6 @@ class Test(TestCase):
         expected = "public static <A, B> MappedList<B, A> mapBacked(ObservableList<A> source, Function<A, B> mapper) {"
         self.assertEqual(expected, result)
         result = handle_block_comment("https://github.com/nnovielli/jabref/blob/master/src/main/java/org/jabref/model/TreeNode.java", 47)
-        self.assertEqual(expected, "}")
+        self.assertEqual("};", result)
 
 
