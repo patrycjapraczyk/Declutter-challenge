@@ -1,4 +1,4 @@
-comment
+code
 public static void showContextMenu(TextArea textArea, ContextMenu contextMenu, ContextMenuEvent e) {
 TABLE_ICONS.put(SpecialField.PRINTED, icon);
 BindingsHelper.bindBidirectional(valueProperty(), temporalAccessorValue,
