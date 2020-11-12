@@ -83,7 +83,7 @@ class DataProcesser:
         # to lower case
         text = text.lower()
         text = self.remove_java_tags(text)
-        #text = self.remove_accented_chars(text)
+        text = self.remove_accented_chars(text)
         text = self.replace_special_characters(text)
         text = self.stem(text)
 
