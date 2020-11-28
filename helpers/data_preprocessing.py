@@ -11,31 +11,31 @@ import re
 
 
 class DataProcesser:
-    def remove_accented_chars(self, text: str) -> str:
+    def remove_accented_chars(text: str) -> str:
         text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('utf-8', 'ignore')
         return text
 
-    def remove_special_characters(self, text: str, remove_digits=True) -> str:
+    def remove_special_characters(text: str, remove_digits=True) -> str:
         pattern = r'[^a-zA-z0-9\s]' if not remove_digits else r'[^a-zA-z\s]'
         text = re.sub(pattern, '', text)
         return text
 
-    def replace_special_characters(self, text: str, remove_digits=True) -> str:
+    def replace_special_characters(text: str, remove_digits=True) -> str:
         pattern = r'[^a-zA-z0-9\s]' if not remove_digits else r'[^a-zA-z\s]'
         text = re.sub(pattern, ' ', text)
         return text
 
-    def stemming(self, text: pd.Series):
+    def stemming(text: pd.Series):
         ps = PorterStemmer()
         stemmed = [(" ".join(list(map(ps.stem, comment.split())))) for comment in text]
         return pd.Series(stemmed)
 
-    def stem(self, text: str):
+    def stem(text: str):
         ps = PorterStemmer()
         stemmed = (" ".join(list(map(ps.stem, text.split()))))
         return stemmed
 
-    def remove_stopwords(self, text: str) -> str:
+    def remove_stopwords(text: str) -> str:
         tokenizer = ToktokTokenizer()
         stopword_list = nltk.corpus.stopwords.words('english')
 
@@ -45,23 +45,23 @@ class DataProcesser:
         filtered_text = ' '.join(filtered_tokens)
         return filtered_text
 
-    def remove_java_tags(self, text: str) -> str:
+    def remove_java_tags(text: str) -> str:
         for tag in JAVA_TAGS:
             text = re.sub(rf"{tag.lower()}", '', text)
         return text
 
-    def remove_java_keywords(self, text: str) -> str:
+    def remove_java_keywords(text: str) -> str:
         for tag in JAVA_KEYWORDS:
             text = re.sub(rf"{tag.lower()}", '', text)
         return text
 
-    def is_lower_case(self, ch):
+    def is_lower_case(ch):
         ch.lower() == ch
 
-    def is_upper_case(self, ch):
+    def is_upper_case(ch):
         ch.upper() == ch
 
-    def extract_camel_case(self, text: str) -> str:
+    def extract_camel_case(text: str) -> str:
         counter = len(text)
         i = 1
         while i < counter:
@@ -75,25 +75,36 @@ class DataProcesser:
 
         return text
 
-    def extract_snake_case(self, text):
+    def extract_snake_case(text):
         text =  text.replace('_', ' ')
         return text
 
-    def preprocess(self, text):
+    def preprocess(text):
         # to lower case
+        #text = self.extract_camel_case(text)
+        #text = self.extract_snake_case(text)
+        text = str(text)
         text = text.lower()
-        text = self.remove_java_tags(text)
-        text = self.remove_accented_chars(text)
-        text = self.replace_special_characters(text)
-        text = self.stem(text)
+        text = DataProcesser.remove_java_tags(text)
+        text = DataProcesser.remove_java_keywords(text)
+        text = DataProcesser.remove_accented_chars(text)
+        text = DataProcesser.replace_special_characters(text)
+        #text = self.remove_stopwords(text)
+        text = DataProcesser.stem(text)
+        return text
 
-        # text = text.apply(lambda x: x.lower())
-        # text = text.apply(lambda x: self.remove_java_tags(x))
-        # text = text.apply(lambda x: self.remove_accented_chars(x))
-        # text = text.map(lambda x: self.remove_special_characters(x))
-        # #stemming
-        # text = self.stemming(text)
-        # # comments_train = [remove_stopwords(comment) for comment in comments_train]
+    def preprocess_code(text):
+        # to lower case
+        text = str(text)
+        text = DataProcesser.extract_camel_case(text)
+        text = DataProcesser.extract_snake_case(text)
+        text = text.lower()
+        text = DataProcesser.remove_java_tags(text)
+        text = DataProcesser.remove_java_keywords(text)
+        text = DataProcesser.remove_accented_chars(text)
+        text = DataProcesser.replace_special_characters(text)
+        #text = self.remove_stopwords(text)
+        text = DataProcesser.stem(text)
         return text
 
 
