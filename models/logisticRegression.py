@@ -1,7 +1,7 @@
 from helpers.data_loader import DataLoader
 from helpers.data_preprocessing import DataProcesser
 from helpers.feature_helper import FeatureHelper
-from helpers.text_representation import TextRepresentation
+from text_representation.text_representation_factory import TextRepresentationFactory
 from helpers.text_similarity import TextSimilarity
 
 import pandas as pd
@@ -57,17 +57,21 @@ class LogisticRegressionHelper:
             self.features, self.values, test_size=0.25, random_state=1000)
 
     def vectorise_comment_data(self):
-        self.comments = TextRepresentation.vectorize(self.comments, 'BOW')
-        self.code_vectorised = TextRepresentation.vectorize(self.code, 'BOW')
+        text_representation = TextRepresentationFactory.get_text_representation('W2V')
+        self.comments = text_representation.vectorize(self.comments)
+
+        text_representation = TextRepresentationFactory.get_text_representation('W2V')
+        self.code_vectorised = text_representation.vectorize(self.code)
 
     def combine_features(self):
-        features = scale(self.length_data.reshape((self.length_data.shape[0], 1)))
-        features = scale(np.hstack((features, self.stopwords_num.reshape(self.stopwords_num.shape[0], 1))))
-        features = scale(np.hstack((features, self.code_comment_similarity.reshape(self.code_comment_similarity.shape[0], 1))))
-        features = scale(np.hstack((features, self.java_tags_ratio.reshape(self.java_tags_ratio.shape[0], 1))))
-        #features = scale(np.hstack((features, self.types.reshape(self.types.shape[0], 1))))
+        # features = scale(self.length_data.reshape((self.length_data.shape[0], 1)))
+        # features = scale(np.hstack((features, self.stopwords_num.reshape(self.stopwords_num.shape[0], 1))))
+        # features = scale(np.hstack((features, self.code_comment_similarity.reshape(self.code_comment_similarity.shape[0], 1))))
+        # features = scale(np.hstack((features, self.java_tags_ratio.reshape(self.java_tags_ratio.shape[0], 1))))
+        # features = scale(np.hstack((features, self.types.reshape(self.types.shape[0], 1))))
 
-        features = sparse.hstack((features, self.comments))
+        features = self.comments
+        #features = scale(np.hstack((features, self.comments.reshape(self.comments.shape[0], 1))))
         #features = scale(np.hstack((features, self.code_comment_similarity.reshape(self.code_comment_similarity.shape[0], 1))))
         #features = sparse.hstack((features, self.code_vectorised))
         self.features = features
