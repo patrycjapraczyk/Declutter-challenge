@@ -6,14 +6,14 @@ from text_representation.tfidf import Tfidf
 
 
 class TextRepresentationFactory:
-    def get_text_representation(format) -> AbstractTextRepresentation:
+    def get_text_representation(format, corpus) -> AbstractTextRepresentation:
         if format == 'BOW':
-            return BagOfWords()
+            return BagOfWords(corpus)
         elif format == 'B-NGRAM':
-            return BagOfNgrams()
+            return BagOfNgrams(corpus)
         elif format == 'TFIDF':
-            return Tfidf()
+            return Tfidf(corpus)
         elif format == 'W2V':
-            return Word2Vec()
+            return Word2Vec(corpus)
         else:
             raise ValueError(format)

@@ -10,8 +10,11 @@ from sklearn.preprocessing import normalize
 class Word2Vec(AbstractTextRepresentation):
     W2V_NUM_FEATURES = 1000
 
-    def build_model(self, tokenized_train):
-        self.w2v_model = gensim.models.Word2Vec(tokenized_train, size=self.W2V_NUM_FEATURES,
+    def __init__(self, corpus):
+        self.create_model(corpus)
+
+    def create_model(self, corpus):
+        self.w2v_model = gensim.models.Word2Vec(corpus, size=self.W2V_NUM_FEATURES,
                                            window=100, min_count=2, sample=1e-3, sg=1, iter=5, workers=10)
 
     def document_vectorizer(self, corpus, num_features):
@@ -34,7 +37,6 @@ class Word2Vec(AbstractTextRepresentation):
 
     def vectorize(self, corpus):
         corpus = [sent for sent in corpus]
-        self.build_model(corpus)
         avg_wv_train_features = self.document_vectorizer(corpus=corpus, num_features=self.W2V_NUM_FEATURES)
         avg_wv_train_features = normalize(avg_wv_train_features, norm='l1', axis=0)
         return avg_wv_train_features

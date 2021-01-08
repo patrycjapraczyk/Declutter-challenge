@@ -5,12 +5,17 @@ from sklearn.preprocessing import normalize
 
 
 class BagOfWords(AbstractTextRepresentation):
-    def vectorize(self, corpus):
+    def __init__(self, corpus):
+        self.create_model(corpus)
+
+    def create_model(self, corpus):
         corpus = [w for w in corpus]
         self.vectorizer = CountVectorizer()
         self.vectorizer.fit(corpus)
-        self.val = self.vectorizer.transform(corpus)
-        self.val = normalize(self.val, norm='l1', axis=0)
+
+    def vectorize(self, val):
+        self.val = self.vectorizer.transform(val)
+        #self.val = normalize(self.val, norm='l1', axis=0)
         return self.val
 
     def print(self, val):

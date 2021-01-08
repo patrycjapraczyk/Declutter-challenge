@@ -5,13 +5,21 @@ from sklearn.preprocessing import normalize
 
 
 class BagOfNgrams(AbstractTextRepresentation):
-    def vectorize(self, corpus):
+    def __init__(self, corpus):
+        self.create_model(corpus)
+
+    def create_model(self, corpus):
+        corpus = [w for w in corpus]
         self.vectorizer = CountVectorizer(ngram_range=(2, 2))
-        self.val = self.vectorizer.fit_transform(corpus)
+        self.vectorizer.fit(corpus)
+
+    def vectorize(self, val):
+        self.val = self.vectorizer.transform(val)
         self.val = normalize(self.val, norm='l1', axis=0)
         return self.val
 
-    def print(self):
+    def print(self, val):
         matrix = self.val.toarray()
         vocab = self.vectorizer.get_feature_names()
-        pd.DataFrame(matrix, columns=vocab)
+        df = pd.DataFrame(matrix, columns=vocab)
+        return df

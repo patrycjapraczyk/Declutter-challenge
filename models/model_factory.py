@@ -24,5 +24,5 @@ class ModelFactory:
 
     @staticmethod
     def get_models_list() -> list:
-        list = ['LogisticRegression', 'RandomForest', 'NaiveBayes', 'GradientBoosting', 'SVM']
+        list = ['LogisticRegression', 'RandomForest', 'GradientBoosting', 'SVM']
         return list
