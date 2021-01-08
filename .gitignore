@@ -2,3 +2,8 @@
 data/.~lock.train_set_0520.csv#
 const/__pycache__/
 helpers/__pycache__/
+models/__pycache__/abstract_model.cpython-38.pyc
+
+models/__pycache__/
+.gitignore
+text_representation/__pycache__/
