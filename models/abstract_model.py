@@ -13,3 +13,7 @@ class AbstractModel(ABC):
     @abstractmethod
     def predict(self, x_test):
         pass
+
+    @abstractmethod
+    def print(self):
+        pass

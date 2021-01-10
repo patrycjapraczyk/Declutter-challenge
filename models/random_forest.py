@@ -1,5 +1,7 @@
 from models.abstract_model import AbstractModel
 from sklearn.ensemble import RandomForestClassifier
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 class RandomForestModel(AbstractModel):
@@ -15,3 +17,23 @@ class RandomForestModel(AbstractModel):
     def predict(self, x_test):
         y_pred = self.model.predict(x_test)
         return y_pred
+
+    def get_model(self):
+        return self.model
+
+    def print(self):
+        col = ["Comment Length", "Stopwords number", "Comment/code similarity"]
+        y = self.model.feature_importances_
+        # plot
+        fig, ax = plt.subplots()
+        width = 0.4  # the width of the bars
+        ind = np.arange(len(y))  # the x locations for the groups
+        ax.barh(ind, y, width, color="green")
+        ax.set_yticks(ind + width / 10)
+        ax.set_yticklabels(col, minor=False)
+
+        plt.title("Feature importance in RandomForest Classifier")
+        plt.xlabel("Relative importance")
+        plt.ylabel("feature")
+        plt.figure(figsize=(5, 5))
+        fig.set_size_inches(6.5, 4.5, forward=True)

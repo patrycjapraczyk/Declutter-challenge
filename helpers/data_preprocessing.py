@@ -82,9 +82,10 @@ class DataProcesser:
     def preprocess(text):
         # to lower case
         text = str(text)
-        text = DataProcesser.extract_camel_case(text)
-        text = DataProcesser.extract_snake_case(text)
+        # text = DataProcesser.extract_camel_case(text)
+        # text = DataProcesser.extract_snake_case(text)
         text = text.lower()
+        #text = DataProcesser.remove_stopwords(text)
         text = DataProcesser.remove_java_tags(text)
         text = DataProcesser.remove_java_keywords(text)
         text = DataProcesser.remove_accented_chars(text)
@@ -95,8 +96,8 @@ class DataProcesser:
     def preprocess_code(text):
         # to lower case
         text = str(text)
-        #text = DataProcesser.extract_camel_case(text)
-        #text = DataProcesser.extract_snake_case(text)
+        text = DataProcesser.extract_camel_case(text)
+        text = DataProcesser.extract_snake_case(text)
         text = text.lower()
         text = DataProcesser.remove_java_tags(text)
         text = DataProcesser.remove_java_keywords(text)

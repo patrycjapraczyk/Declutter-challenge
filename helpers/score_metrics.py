@@ -17,5 +17,5 @@ class ScoreMetrics:
         recall = recall_score(y_test, y_pred)
         f1 = f1_score(y_test, y_pred)
         score_df = pd.DataFrame()
-        score_df.append({'name': name, 'accuracy': accuracy, 'precision': precision, 'recall': recall, 'f1': f1}, ignore_index=True)
+        score_df = score_df.append({'name': name, 'accuracy': accuracy, 'precision': precision, 'recall': recall, 'f1': f1}, ignore_index=True)
         return score_df

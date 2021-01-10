@@ -7,7 +7,7 @@ class SVM(AbstractModel):
         self.create_model()
 
     def create_model(self):
-        self.model = LinearSVC(penalty='l2', C=1, random_state=42)
+        self.model = LinearSVC(penalty='l2', C=1, random_state=42, max_iter=2000)
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)
@@ -15,3 +15,6 @@ class SVM(AbstractModel):
     def predict(self, x_test):
         y_pred = self.model.predict(x_test)
         return y_pred
+
+    def print(self):
+        pass

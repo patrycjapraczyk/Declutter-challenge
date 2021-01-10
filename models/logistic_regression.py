@@ -15,3 +15,6 @@ class LogisticRegressionModel(AbstractModel):
     def predict(self, x_test):
         y_pred = self.model.predict(x_test)
         return y_pred
+
+    def print(self):
+        pass
