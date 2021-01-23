@@ -13,9 +13,17 @@ from helpers.data_preprocessing import DataProcesser
 LINE_COMMENT_KEY = '//'
 MULTIPLE_LINE_COMMENT_START = '/*'
 MULTIPLE_LINE_COMMENT_END = '*/'
+PARENS_OPEN = '{'
+PARENS_CLOSE = '}'
 
 
-def get_code_line(link: str, line_num: int) -> str:
+def do_request(link):
+    val = requests.get(link).text
+    time.sleep(5)
+    return val
+
+
+def get_code_line(link: str, line_num: int, result=None) -> str:
     """
     gets html from @link and returns a string
     with the contents at @line_num
@@ -23,8 +31,9 @@ def get_code_line(link: str, line_num: int) -> str:
     :param line_num: a code line
     :return: file content at @line_num
     """
-    result = requests.get(link).text
-    time.sleep(5)
+    if result == None:
+        result = requests.get(link).text
+        time.sleep(5)
     soup = bs.BeautifulSoup(result, 'lxml')
     # comment lines normally have LC+line_number html id tag
     line_id = "LC" + str(line_num)
@@ -70,8 +79,7 @@ def is_line_java_tag(code_line: str) -> bool:
 
 
 def is_line_java_keyword(code_line: str) -> bool:
-    dp = DataProcesser()
-    code_line = dp.remove_special_characters(code_line)
+    code_line = DataProcesser.remove_special_characters(code_line)
     for keyword in JAVA_KEYWORDS:
         if code_line == keyword:
             return True
@@ -79,17 +87,15 @@ def is_line_java_keyword(code_line: str) -> bool:
 
 
 def is_only_special_char(code_line: str) -> str:
-    dp = DataProcesser()
-    code_line = dp.remove_special_characters(code_line)
-    code_line = code_line.replace(" ", "")
+    code_line = DataProcesser.remove_special_characters(code_line)
+    code_line = code_line.replace(" ", ",")
     return code_line == ''
 
 
 def is_invalid_code(code_line: str) -> bool:
     is_com = is_line_comment(code_line)
     is_tag = is_line_java_tag(code_line)
-    dp = DataProcesser()
-    code_line = dp.remove_special_characters(code_line)
+    code_line = DataProcesser.remove_special_characters(code_line)
     code_line = code_line.replace(" ", "")
     return (code_line.isspace() or is_com or \
             is_tag or is_line_java_keyword(code_line) or is_only_special_char(code_line))
@@ -142,10 +148,40 @@ def handle_block_comment(path, begin_line):
     return code_line
 
 
+def handle_javadoc_code(path, begin_line):
+    result = do_request(path)
+    code_line = get_code_line(path, begin_line, result)
+    counter = 1
+    found_comment_end = False
+    while not found_comment_end:
+        if MULTIPLE_LINE_COMMENT_END in code_line:
+            found_comment_end = True
+        code_line = get_code_line(path, begin_line + counter, result)
+        counter += 1
+
+    while is_invalid_code(code_line) and not ("}" in code_line):
+        code_line = get_code_line(path, begin_line + counter, result)
+        counter += 1
+
+    parens_open = 0
+    total_code = code_line
+    is_first = True
+    while parens_open > 0 or is_first:
+        is_first = False
+        count_open_parens = code_line.count(PARENS_OPEN)
+        count_parens_close = code_line.count(PARENS_CLOSE)
+        parens_open += count_open_parens - count_parens_close
+        total_code += " " + code_line
+        code_line = get_code_line(path, begin_line + counter, result)
+        counter += 1
+
+    return total_code
+
+
 data = pd.read_csv("./../data/train_set_0520.csv", usecols=['type', 'path_to_file', 'begin_line'])
-paths = data['path_to_file'].tolist()[1311:] #206 559 560 1312
-begin_lines = data['begin_line'].tolist()[1311:]
-types = data['type'].tolist()[1311:]
+paths = data['path_to_file'].tolist()#21, 34, 84, 122, 143
+begin_lines = data['begin_line'].tolist()
+types = data['type'].tolist()
 
 lines = []
 
@@ -153,20 +189,34 @@ for i in range(0, len(paths)):
     print('-------')
     print(paths[i])
     print(begin_lines[i])
-    line = ""
-    if types[i] == 'Line':
-        line = get_code_line_comment(paths[i], begin_lines[i])
-    elif types[i] == 'Block':
-        line = handle_block_comment(paths[i], begin_lines[i])
-    else:
-        line = handle_block_comment(paths[i], begin_lines[i])
-    print(line)
-    lines.append(line)
-    f = open("./../data/code_data.csv", "a")
-    f.write(line + '\n')
+    code = ""
+    if types[i] == 'Javadoc':
+        code = handle_javadoc_code(paths[i], begin_lines[i])
+
+    print(code)
+    lines.append(code)
+    f = open("./../data/code_data_long2.csv", "a")
+    f.write(code + '\n')
     f.close()
 
-
-df2 = pd.DataFrame(np.array(lines),
-                   columns=['comments'])
-df2.to_csv('./../data/comments.csv')
+# for i in range(0, len(paths)):
+#     print('-------')
+#     print(paths[i])
+#     print(begin_lines[i])
+#     line = ""
+#     if types[i] == 'Line':
+#         line = get_code_line_comment(paths[i], begin_lines[i])
+#     elif types[i] == 'Block':
+#         line = handle_block_comment(paths[i], begin_lines[i])
+#     else:
+#         line = handle_block_comment(paths[i], begin_lines[i])
+#     print(line)
+#     lines.append(line)
+#     f = open("./../data/code_data.csv", "a")
+#     f.write(line + '\n')
+#     f.close()
+#
+#
+# df2 = pd.DataFrame(np.array(lines),
+#                    columns=['comments'])
+# df2.to_csv('./../data/comments.csv')
