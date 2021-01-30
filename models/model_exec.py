@@ -16,8 +16,8 @@ from scipy import sparse
 
 
 class ModelExec:
-    def __init__(self, include_comments=False):
-        self.data = DataLoader.load_data()
+    def __init__(self, include_comments=False, include_long_code=False):
+        self.data = DataLoader.load_data(True)
         self.preprocess_comment_data()
         self.split_data()
         self.extract_features(include_comments)
@@ -46,13 +46,14 @@ class ModelExec:
         # java_tags_train = self.x_train['java_tags_ratio'].to_numpy()
         # java_tags_test = self.x_test['java_tags_ratio'].to_numpy()
 
+        # self.x_train['comment'] = self.x_train['comment'].apply(DataProcesser.remove_stopwords)
+        # self.x_test['comment'] = self.x_test['comment'].apply(DataProcesser.remove_stopwords)
+
         code_comment_similarity_train = self.x_train.apply(lambda row:
                                                            TextSimilarity.get_similarity_score(
                                                                s1=DataProcesser.preprocess(row['comment']),
                                                                s2=DataProcesser.preprocess(row['code']), type='COSINE_TFIDF'),
                                                            axis=1).to_numpy()
-        self.x_train['comment'] = self.x_train['comment'].apply(DataProcesser.remove_stopwords)
-        self.x_test['comment'] = self.x_test['comment'].apply(DataProcesser.remove_stopwords)
 
         code_comment_similarity_test = self.x_test.apply(lambda row:
                                                          TextSimilarity.get_similarity_score(
@@ -78,21 +79,15 @@ class ModelExec:
         return (x_train_comments, x_test_comments)
 
     def combine_features(self, feature_list: list, include_comments: bool) -> pd.DataFrame:
-        # TODO: stack comment
-        # Accuracy
-        # Score: 0.774390243902439
-        # Precision
-        # Score: 0.6419753086419753
-        # Recall
-        # Score: 0.5360824742268041
-        # F1
-        #Score: 0.5842696629213482
         features = scale(feature_list[0].reshape((feature_list[0].shape[0], 1)))
         features = scale(np.hstack((features, feature_list[1].reshape(feature_list[1].shape[0], 1))))
         features = scale(np.hstack((features, feature_list[2].reshape(feature_list[2].shape[0], 1))))
         if include_comments:
-            comments = feature_list[3].toarray()
-            features = scale(np.hstack((features, comments)))
+            comments = feature_list[3]
+            features = sparse.hstack((comments, features))
+
+        # comments = feature_list[3]
+        # features = comments
         return features
 
     def compare_models(self):
@@ -113,5 +108,6 @@ class ModelExec:
         model.fit_model(self.features_train, self.y_train)
         y_pred = model.predict(self.features_test)
         return model
+#
+ModelExec(include_comments=True, include_long_code=True)
 
-ModelExec(include_comments=True)
