@@ -9,10 +9,10 @@ class Ensemble:
     def get_ensemble_score(mode, features_train_text, features_train_notext,
                      features_test_text, features_test_notext, y_train, y_test):
         if mode == 'MAX_VOTE':
-            Ensemble.ensemble_max_vote(features_train_text, features_train_notext,
+            return Ensemble.ensemble_max_vote(features_train_text, features_train_notext,
                      features_test_text, features_test_notext, y_train, y_test)
         elif mode == 'AVERAGING':
-            Ensemble.ensemble_averaging(features_train_text, features_train_notext,
+            return Ensemble.ensemble_averaging(features_train_text, features_train_notext,
                                        features_test_text, features_test_notext, y_train, y_test)
 
     @staticmethod
@@ -31,7 +31,7 @@ class Ensemble:
         for i in range(0, len(y_test)):
             val = mode([pred1[i], pred2[i]])
             final_pred = np.append(final_pred, val)
-        ScoreMetrics.print_scores(y_test, final_pred)
+        return ScoreMetrics.get_scores(y_test, final_pred)
 
     @staticmethod
     def ensemble_averaging(features_train_text, features_train_notext,
@@ -53,4 +53,4 @@ class Ensemble:
             if first > second:
                 val = 0
             final_pred = np.append(final_pred, val)
-        ScoreMetrics.print_scores(y_test, final_pred)
+        return ScoreMetrics.get_scores('ensemble', y_test, final_pred)
