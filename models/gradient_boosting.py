@@ -16,5 +16,9 @@ class GradientBoosting(AbstractModel):
         y_pred = self.model.predict(x_test)
         return y_pred
 
+    def predict_proba(self, x_test):
+        y_pred = self.model.predict_proba(x_test)
+        return y_pred
+
     def print(self):
         pass

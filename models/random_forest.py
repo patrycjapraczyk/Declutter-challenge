@@ -21,6 +21,10 @@ class RandomForestModel(AbstractModel):
     def get_model(self):
         return self.model
 
+    def predict_proba(self, x_test):
+        y_pred = self.model.predict_proba(x_test)
+        return y_pred
+
     def print(self):
         col = ["Comment Length", "Stopwords number", "Comment/code similarity"]
         y = self.model.feature_importances_
