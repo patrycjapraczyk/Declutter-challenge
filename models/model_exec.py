@@ -38,7 +38,7 @@ class ModelExec:
 
     def kfold_split(self):
         i = 1
-        kFold = KFold(n_splits=5, shuffle=True, random_state=None)
+        kFold = KFold(n_splits=8, shuffle=True, random_state=None)
         model_list = ModelFactory.get_models_list()
         model_list.append('ensemble')
         vals = [[name, [], [], [], []] for name in model_list]
