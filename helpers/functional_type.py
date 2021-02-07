@@ -21,6 +21,7 @@ FUNCTIONAL_TYPES = {
 #requires not handled
 
 data = DataLoader.load_data()
+data.insert(len(data.columns), 'functional_type', 'empty')
 functional_types = pd.DataFrame(columns=["functional_type"], data=[])
 
 for index, row in data.iterrows():
@@ -32,6 +33,8 @@ for index, row in data.iterrows():
             val = key
             break
     functional_types.loc[index] = val
+    data.at[index, 'functional_type'] = val
+    i = 0
 
-functional_types.to_csv('./../data/functional_types.csv')
+data.to_csv('./../data/functional_types2.csv')
 print(data)

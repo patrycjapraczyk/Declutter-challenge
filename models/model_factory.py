@@ -4,6 +4,7 @@ from models.random_forest import RandomForestModel
 from models.naive_bayes import NaiveBayes
 from models.gradient_boosting import GradientBoosting
 from models.SVM import SVM
+from models.one_class_SVM import OneClassSVMModel
 
 
 class ModelFactory:
@@ -19,10 +20,12 @@ class ModelFactory:
             return GradientBoosting()
         if format == 'SVM':
             return SVM()
+        if format == 'OneClassSVM':
+            return OneClassSVMModel()
         else:
             raise ValueError(format)
 
     @staticmethod
     def get_models_list() -> list:
-        list = ['LogisticRegression', 'RandomForest', 'GradientBoosting', 'SVM']
+        list = ['LogisticRegression', 'RandomForest', 'GradientBoosting', 'SVM', 'OneClassSVM']
         return list

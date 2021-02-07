@@ -6,6 +6,7 @@ from models.model_factory import ModelFactory
 from helpers.score_metrics import ScoreMetrics
 from helpers.text_similarity import TextSimilarity
 from models.ensemble import Ensemble
+from helpers.class_imbalance_sampling import ImbalanceSampling
 
 import pandas as pd
 import numpy as np
@@ -18,10 +19,10 @@ class ModelExec:
     def __init__(self, include_comments=False, include_long_code=False):
         self.data = DataLoader.load_data(True)
         self.preprocess_comment_data()
-        self.kfold_split()
-        # split_data = self.split_data()
-        # features = self.extract_features(split_data['x_train'], split_data['x_test'])
-        # self.ensemble_model(features['features_train'], features['features_test'], split_data['y_train'], split_data['y_test'])
+        #self.kfold_split()
+        split_data = self.split_data()
+        features = self.extract_features(split_data['x_train'], split_data['x_test'])
+        self.ensemble_model(features['features_train'], features['features_test'], split_data['y_train'], split_data['y_test'])
 
     def preprocess_comment_data(self):
         self.data['comment'] = self.data['comment'].apply(str)
@@ -30,6 +31,8 @@ class ModelExec:
         self.data['comment'] = self.data['comment']
         self.data['comment'] = self.data['comment'].apply(DataProcesser.preprocess)
         self.data['code'] = self.data['code'].apply(DataProcesser.preprocess_code)
+
+        i = 1
 
     def split_data(self):
         x_train, x_test, y_train, y_test = train_test_split(
@@ -87,8 +90,16 @@ class ModelExec:
         length_data_test = x_test['comment'].apply(lambda c: len(c.split())).to_numpy()
         stopwords_num_test = x_test['comment'].apply(FeatureHelper.get_stop_words_num).to_numpy()
 
-        # java_tags_train = self.x_train['java_tags_ratio'].to_numpy()
-        # java_tags_test = self.x_test['java_tags_ratio'].to_numpy()
+        functional_types = ['method_declaration', 'class_declaration', 'assignment', 'method_call', 'return',
+                            'requires', 'enum',
+                            'loop', 'conditional', 'catch', 'var_declaration', 'package_import', 'loop_exit', 'empty']
+        self.data['functional_type'].apply(functional_types.index)
+
+        functional_types_train = x_train['functional_type'].apply(functional_types.index).to_numpy()
+        functional_types_test = x_test['functional_type'].apply(functional_types.index).to_numpy()
+
+        java_tags_train = x_train['java_tags_ratio'].to_numpy()
+        java_tags_test = x_test['java_tags_ratio'].to_numpy()
 
         x_train['comment'] = x_train['comment'].apply(DataProcesser.remove_stopwords)
         x_test['comment'] = x_test['comment'].apply(DataProcesser.remove_stopwords)
@@ -109,8 +120,8 @@ class ModelExec:
         comments_train = comment_vectorised[0]
         comments_test = comment_vectorised[1]
 
-        features_train = [length_data_train, stopwords_num_train, code_comment_similarity_train, comments_train]
-        features_test = [length_data_test, stopwords_num_test, code_comment_similarity_test, comments_test]
+        features_train = [length_data_train, stopwords_num_train, code_comment_similarity_train, comments_train, functional_types_train, java_tags_train]
+        features_test = [length_data_test, stopwords_num_test, code_comment_similarity_test, comments_test, functional_types_test, java_tags_test]
         return {'features_train': features_train, 'features_test': features_test}
 
     def split_text_no_text(self, features_train, features_test):
@@ -131,6 +142,8 @@ class ModelExec:
         features = scale(feature_list[0].reshape((feature_list[0].shape[0], 1)))
         features = scale(np.hstack((features, feature_list[1].reshape(feature_list[1].shape[0], 1))))
         features = scale(np.hstack((features, feature_list[2].reshape(feature_list[2].shape[0], 1))))
+        features = scale(np.hstack((features, feature_list[4].reshape(feature_list[4].shape[0], 1))))
+        #features = scale(np.hstack((features, feature_list[5].reshape(feature_list[5].shape[0], 1))))
         if include_comments:
             comments = feature_list[3]
             features = sparse.hstack((comments, features))
@@ -139,12 +152,14 @@ class ModelExec:
     def compare_models(self, features_train, features_test, y_train, y_test):
         features_train = self.combine_features(features_train, False)
         features_test = self.combine_features(features_test, False)
+        x_train = features_train
+        #x_train, y_train = ImbalanceSampling.get_sampled_data('RANDOM_UNDERSAMPLE', x_train, y_train)
 
         model_names = ModelFactory.get_models_list()
         score_df = pd.DataFrame(columns=['name', 'accuracy', 'precision', 'recall', 'f1'])
         for name in model_names:
             model = ModelFactory.get_model(name)
-            model.fit_model(features_train, y_train)
+            model.fit_model(x_train, y_train)
             y_pred = model.predict(features_test)
             score = ScoreMetrics.get_scores(name, y_test, y_pred)
             score_df = score_df.append(score)
@@ -153,16 +168,34 @@ class ModelExec:
 
     def ensemble_model(self, features_train, features_test, y_train, y_test):
         split_data = self.split_text_no_text(features_train, features_test)
-        return Ensemble.get_ensemble_score('AVERAGING', split_data['features_train_text'], split_data['features_train_notext'],
+        score = Ensemble.get_ensemble_score('AVERAGING', split_data['features_train_text'], split_data['features_train_notext'],
                      split_data['features_test_text'], split_data['features_test_notext'], y_train, y_test)
+        for index, row in score.iterrows():
+            print(row['name'])
+            acc = np.mean(row['accuracy'])
+            print('Accuracy ' + str(acc))
+            precision = np.mean(row['precision'])
+            print('Precision ' + str(precision))
+            recall = np.mean(row['recall'])
+            print('Recall ' + str(recall))
+            f1 = np.mean(row['f1'])
+            print('F1 ' + str(f1) + '\n')
+        return score
 
 
     def execute_model(self, name):
         model = ModelFactory.get_model(name)
-        model.fit_model(self.features_train, self.y_train)
-        y_pred = model.predict(self.features_test)
+        split_data = self.split_data()
+        features = self.extract_features(split_data['x_train'], split_data['x_test'])
+        features_train = self.combine_features(features['features_train'], False)
+        features_test = self.combine_features(features['features_test'], False)
+
+        x_train, y_train = ImbalanceSampling.get_sampled_data('RANDOM_UNDERSAMPLE', features_train, split_data['y_train'])
+
+        model.fit_model(x_train, y_train)
+        y_pred = model.predict(features_test)
+        ScoreMetrics.print_scores(split_data['y_test'], y_pred)
         return model
 
 
-ModelExec(include_comments=False, include_long_code=True)
-
+exec = ModelExec(include_comments=False, include_long_code=True)

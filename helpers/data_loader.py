@@ -6,6 +6,8 @@ class DataLoader:
     TRAIN_DATA_PATH = "./../data/train_set_0520.csv"
     CODE_PATH = "./../data/code_data.csv"
     CODE_LONG_PATH = "./../data/code_data_long2.csv"
+    FUNCTIONAL_TYPES = "./../data/functional_types.csv"
+
 
     @staticmethod
     def load_longer_code():
@@ -23,7 +25,9 @@ class DataLoader:
     def load_data(load_code_longer=False) -> pd.DataFrame:
         data = DataLoader.load_csv_file(DataLoader.TRAIN_DATA_PATH, ['type', 'comment', 'non-information'])
         code = DataLoader.load_csv_file(DataLoader.CODE_PATH, ['code'])
+        functional_types = DataLoader.load_csv_file(DataLoader.FUNCTIONAL_TYPES, ['functional_type'])
         data['code'] = code['code']
+        data['functional_type'] = functional_types['functional_type']
 
         if load_code_longer:
             code_long = DataLoader.load_longer_code()
