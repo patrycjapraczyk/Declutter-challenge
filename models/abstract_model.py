@@ -15,5 +15,9 @@ class AbstractModel(ABC):
         pass
 
     @abstractmethod
+    def predict_proba(self, x_test):
+        pass
+
+    @abstractmethod
     def print(self):
         pass

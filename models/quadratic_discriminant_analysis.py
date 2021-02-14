@@ -1,15 +1,15 @@
 from models.abstract_model import AbstractModel
-from sklearn.neural_network import MLPClassifier
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 import matplotlib.pyplot as plt
 import numpy as np
 
 
-class MLP(AbstractModel):
+class QuadraticDiscriminant(AbstractModel):
     def __init__(self):
         self.create_model()
 
     def create_model(self):
-        self.model = MLPClassifier()
+        self.model = QuadraticDiscriminantAnalysis()
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)

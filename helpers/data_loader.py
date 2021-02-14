@@ -22,12 +22,20 @@ class DataLoader:
         return code_long
 
     @staticmethod
+    def apply_functional_types(data):
+        functional_types = ['method_declaration', 'class_declaration', 'assignment', 'method_call', 'return',
+                            'requires', 'enum',
+                            'loop', 'conditional', 'catch', 'var_declaration', 'package_import', 'loop_exit', 'empty']
+        data['functional_type'].apply(functional_types.index)
+
+    @staticmethod
     def load_data(load_code_longer=False) -> pd.DataFrame:
         data = DataLoader.load_csv_file(DataLoader.TRAIN_DATA_PATH, ['type', 'comment', 'non-information'])
         code = DataLoader.load_csv_file(DataLoader.CODE_PATH, ['code'])
         functional_types = DataLoader.load_csv_file(DataLoader.FUNCTIONAL_TYPES, ['functional_type'])
         data['code'] = code['code']
         data['functional_type'] = functional_types['functional_type']
+        DataLoader.apply_functional_types(data)
 
         if load_code_longer:
             code_long = DataLoader.load_longer_code()
@@ -39,7 +47,7 @@ class DataLoader:
         data['code'] = data['code'].apply(str)
         data['comment'] = data['comment'].apply(str)
         data['non-information'] = data['non-information'].values
-        data['non-information'] = np.where(data['non-information'] == 'yes', 1, 0)
+        data['non-information'] = np.where(data['non-information'] == 'no', 1, 0)
         return data
 
     @staticmethod

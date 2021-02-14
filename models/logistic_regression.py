@@ -7,7 +7,7 @@ class LogisticRegressionModel(AbstractModel):
         self.create_model()
 
     def create_model(self):
-        self.model = LogisticRegression()
+        self.model = LogisticRegression(C=1.7575106248547894, penalty='l2')
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)

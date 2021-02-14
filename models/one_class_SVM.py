@@ -8,7 +8,7 @@ class OneClassSVMModel(AbstractModel):
         self.create_model()
 
     def create_model(self):
-        self.model = OneClassSVM(gamma='auto', nu=0.403)
+        self.model = OneClassSVM(gamma='auto')
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train)

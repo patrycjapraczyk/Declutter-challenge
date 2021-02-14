@@ -7,7 +7,7 @@ class SVM(AbstractModel):
         self.create_model()
 
     def create_model(self):
-        self.model = SVC(C=1, random_state=42, max_iter=2000, probability=True)
+        self.model = SVC(random_state=42, max_iter=2000, probability=True, C=1000, gamma=0.001, kernel='rbf')
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)
