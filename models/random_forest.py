@@ -9,6 +9,7 @@ class RandomForestModel(AbstractModel):
         self.create_model()
 
     def create_model(self):
+        #'bootstrap': True, 'max_depth': 80, 'max_features': 2, 'min_samples_leaf': 3, 'min_samples_split': 8, 'n_estimators': 100
         self.model = RandomForestClassifier(bootstrap=True, max_depth=90, max_features=2, min_samples_leaf=5,
                                             min_samples_split=8, n_estimators=200, random_state=42)
 

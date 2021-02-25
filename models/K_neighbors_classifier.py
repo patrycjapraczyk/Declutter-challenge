@@ -9,7 +9,7 @@ class KNeighbors(AbstractModel):
         self.create_model()
 
     def create_model(self):
-        self.model = KNeighborsClassifier()
+        self.model = KNeighborsClassifier(algorithm='auto', leaf_size=10, n_neighbors=14, p=2, weights='uniform')
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)

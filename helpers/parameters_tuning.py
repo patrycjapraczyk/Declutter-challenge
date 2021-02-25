@@ -163,4 +163,27 @@ def tune_kneighbours(x, y):
     print("tuned hpyerparameters :(best parameters) ", model_cv.best_params_)
     print("accuracy :", model_cv.best_score_)
 
-tune_gradient_boosting(x, y)
+
+def tune_naive_bayes(x, y):
+    grid = {
+        'var_smoothing': np.logspace(0, -9, num=100)
+    }
+    model = KNeighborsClassifier()
+    model_cv = GridSearchCV(model, grid, n_jobs=-1, cv=10, verbose=10)
+    model_cv.fit(x, y)
+
+    print("tuned hpyerparameters :(best parameters) ", model_cv.best_params_)
+    print("accuracy :", model_cv.best_score_)
+
+
+########################
+## COMMENT DATA
+
+model_exec = ModelExec(include_comments=False, include_long_code=True)
+comments = model_exec.data['comment']
+comments = model_exec.vectorise_comment_data(comments, comments)
+x = comments[0]
+y = model_exec.data['non-information']
+
+
+tune_ada_boost(x, y)

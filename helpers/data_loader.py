@@ -7,6 +7,7 @@ class DataLoader:
     CODE_PATH = "./../data/code_data.csv"
     CODE_LONG_PATH = "./../data/code_data_long2.csv"
     FUNCTIONAL_TYPES = "./../data/functional_types.csv"
+    PYTHON_DATA = "./../data/python_data.csv"
 
 
     @staticmethod
@@ -26,7 +27,8 @@ class DataLoader:
         functional_types = ['method_declaration', 'class_declaration', 'assignment', 'method_call', 'return',
                             'requires', 'enum',
                             'loop', 'conditional', 'catch', 'var_declaration', 'package_import', 'loop_exit', 'empty']
-        data['functional_type'].apply(functional_types.index)
+        data['functional_type'] = data['functional_type'].apply(functional_types.index)
+        i = 0
 
     @staticmethod
     def load_data(load_code_longer=False) -> pd.DataFrame:
@@ -47,7 +49,17 @@ class DataLoader:
         data['code'] = data['code'].apply(str)
         data['comment'] = data['comment'].apply(str)
         data['non-information'] = data['non-information'].values
-        data['non-information'] = np.where(data['non-information'] == 'no', 1, 0)
+        data['non-information'] = np.where(data['non-information'] == 'yes', 0, 1)
+        return data
+
+    @staticmethod
+    def load_data_python() -> pd.DataFrame:
+        data = DataLoader.load_csv_file(DataLoader.PYTHON_DATA, ['comment', 'non-information', 'code', 'functional_type'])
+        DataLoader.apply_functional_types(data)
+        data['code'] = data['code'].apply(str)
+        data['comment'] = data['comment'].apply(str)
+        data['non-information'] = data['non-information'].values
+        data['non-information'] = np.where(data['non-information'] == 'yes', 0, 1)
         return data
 
     @staticmethod

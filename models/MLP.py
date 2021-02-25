@@ -9,6 +9,7 @@ class MLP(AbstractModel):
         self.create_model()
 
     def create_model(self):
+        #tuned hpyerparameters :(best parameters)  {'activation': 'tanh', 'alpha': 0.0001, 'hidden_layer_sizes': (10, 30, 10), 'learning_rate': 'adaptive', 'solver': 'sgd'}
         self.model = MLPClassifier(activation='tanh', alpha=0.0001, hidden_layer_sizes=(20,), learning_rate='adaptive', solver='adam')
 
     def fit_model(self, x_train, y_train):

@@ -5,11 +5,15 @@ import numpy as np
 
 
 class DecisionTree(AbstractModel):
-    def __init__(self):
+    def __init__(self, text=False):
         self.create_model()
 
-    def create_model(self):
-        self.model = DecisionTreeClassifier(criterion='entropy', max_depth=6, min_samples_leaf=1, min_samples_split=2, min_weight_fraction_leaf=0.01)
+    def create_model(self, text=False):
+        if(text):
+            self.model = DecisionTreeClassifier(criterion='gini', max_depth=110,
+                                                min_samples_leaf=1, min_samples_split=0.1, min_weight_fraction_leaf=0)
+        else:
+            self.model = DecisionTreeClassifier(criterion='entropy', max_depth=6, min_samples_leaf=1, min_samples_split=2, min_weight_fraction_leaf=0.01)
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)

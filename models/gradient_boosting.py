@@ -7,7 +7,8 @@ class GradientBoosting(AbstractModel):
         self.create_model()
 
     def create_model(self):
-        self.model = GradientBoostingClassifier(learning_rate=0.1, min_samples_split=600, min_samples_leaf=20, n_estimators=660, max_depth=5, subsample=0.7, warm_start=True)
+        #'learning_rate': 0.01, 'loss': 'exponential', 'max_depth': 80, 'min_samples_leaf': 80, 'min_samples_split': 600, 'subsample': 0.6, 'warm_start': False
+        self.model = GradientBoostingClassifier(learning_rate=0.1, min_samples_split=600, min_samples_leaf=80, n_estimators=660, max_depth=80, subsample=0.7, warm_start=False)
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)

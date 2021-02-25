@@ -15,7 +15,7 @@ from models.K_neighbors_classifier import KNeighbors
 
 class ModelFactory:
     @staticmethod
-    def get_model(format) -> AbstractModel:
+    def get_model(format, text=False) -> AbstractModel:
         if format == 'LogisticRegression':
             return LogisticRegressionModel()
         if format == 'RandomForest':
@@ -29,7 +29,7 @@ class ModelFactory:
         if format == 'OneClassSVM':
             return OneClassSVMModel()
         if format == 'DecisionTree':
-            return DecisionTree()
+            return DecisionTree(text)
         if format == 'AdaBoost':
             return AdaBoost()
         if format == 'GaussianProcess':

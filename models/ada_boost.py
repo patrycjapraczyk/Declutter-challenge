@@ -9,6 +9,7 @@ class AdaBoost(AbstractModel):
         self.create_model()
 
     def create_model(self):
+        #tuned hpyerparameters :(best parameters)  {'learning_rate': 0.1, 'n_estimators': 172, 'random_state': 0}
         self.model = AdaBoostClassifier(learning_rate=0.1, n_estimators=170, random_state=0)
 
     def fit_model(self, x_train, y_train):

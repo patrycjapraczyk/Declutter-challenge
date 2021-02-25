@@ -51,7 +51,7 @@ class DataProcesser:
         return text
 
     def remove_java_keywords(text: str) -> str:
-        for tag in JAVA_KEYWORDS:
+        for tag in (JAVA_KEYWORDS + PYTHON_KEYWORDS):
             text = re.sub(rf"{tag.lower()}", '', text)
         return text
 
