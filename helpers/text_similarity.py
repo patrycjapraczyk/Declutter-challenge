@@ -24,12 +24,11 @@ class TextSimilarity:
 
     @staticmethod
     def _jacc_score(s1: str, s2: str) -> object:
-        comment_word_len = len(s1.split())
-        code_word_len = len(s2.split())
-        common_word_num = count_common_words(s1, s2)
-        if common_word_num == 0:
-            return 0
-        return common_word_num / (comment_word_len + code_word_len + common_word_num)
+        comment_words = s1.split()
+        code_words = s2.split()
+        intersection = len(list(set(comment_words).intersection(code_words)))
+        union = (len(comment_words) + len(code_words)) - intersection
+        return float(intersection) / union
 
     @staticmethod
     def _cosine_similarity(s1: str, s2: str):

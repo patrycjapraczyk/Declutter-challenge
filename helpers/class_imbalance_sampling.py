@@ -1,4 +1,4 @@
-from imblearn.over_sampling import SMOTE, ADASYN
+from imblearn.over_sampling import SMOTE, ADASYN, RandomOverSampler
 from imblearn.under_sampling import RandomUnderSampler
 from imblearn.combine import SMOTEENN
 
@@ -17,6 +17,8 @@ class ImbalanceSampling:
             return ImbalanceSampling._adasyn
         if format == 'RANDOM_UNDERSAMPLE':
             return ImbalanceSampling._random_undersamplifier
+        if format == 'RANDOM_OVERSAMPLE':
+            return ImbalanceSampling._random_oversamplifier
         if format == 'SMOTEEN':
             return ImbalanceSampling._smoteen
         else:
@@ -35,6 +37,11 @@ class ImbalanceSampling:
     @staticmethod
     def _random_undersamplifier(x_train, y_train):
         rus = RandomUnderSampler()
+        return rus.fit_sample(x_train, y_train)
+
+    @staticmethod
+    def _random_oversamplifier(x_train, y_train):
+        rus = RandomOverSampler()
         return rus.fit_sample(x_train, y_train)
 
     @staticmethod

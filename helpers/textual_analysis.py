@@ -27,5 +27,6 @@ def count_common_words(s1: str, s2: str):
     s1 = s1.split()
     s2 = s2.split()
     common = set(s1).intersection(set(s2))
-    return len(common)/(len(s1) + len(s2))
+    return 2*len(common)/(len(s1) + len(s2))
+
 

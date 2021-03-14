@@ -1,13 +1,13 @@
 from models.abstract_model import AbstractModel
-from sklearn.svm import SVC
+from sklearn.dummy import DummyClassifier
 
 
-class SVM(AbstractModel):
+class Dummy(AbstractModel):
     def __init__(self):
         self.create_model()
 
     def create_model(self):
-        self.model = SVC(random_state=42, probability=True, C=1000, gamma=0.001, kernel='rbf')
+        self.model = DummyClassifier(strategy="most_frequent")
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)
@@ -15,6 +15,9 @@ class SVM(AbstractModel):
     def predict(self, x_test):
         y_pred = self.model.predict(x_test)
         return y_pred
+
+    def get_model(self):
+        return self.model
 
     def predict_proba(self, x_test):
         y_pred = self.model.predict_proba(x_test)

@@ -21,3 +21,4 @@ class AbstractModel(ABC):
     @abstractmethod
     def print(self):
         pass
+

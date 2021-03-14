@@ -18,6 +18,7 @@ class FeatureHelper:
 
     def get_java_tags_num(text: str) -> int:
         tags = []
+        text = str(text)
         text = text.lower()
         for tag in JAVA_TAGS:
             tags += re.findall(tag.lower(), text)

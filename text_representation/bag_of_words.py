@@ -9,7 +9,7 @@ class BagOfWords(AbstractTextRepresentation):
         self.create_model(corpus)
 
     def create_model(self, corpus):
-        corpus = [w for w in corpus]
+        corpus = [str(w) for w in corpus]
         self.vectorizer = CountVectorizer()
         self.vectorizer.fit(corpus)
 

@@ -11,6 +11,7 @@ from models.gaussian_process import GaussianProcess
 from models.MLP import MLP
 from models.quadratic_discriminant_analysis import QuadraticDiscriminant
 from models.K_neighbors_classifier import KNeighbors
+from models.dummy import Dummy
 
 
 class ModelFactory:
@@ -40,13 +41,15 @@ class ModelFactory:
             return KNeighbors()
         if format == 'QuadraticDiscriminant':
             return QuadraticDiscriminant()
+        if format == 'Dummy':
+            return Dummy()
         else:
             raise ValueError(format)
 
     @staticmethod
     def get_models_list() -> list:
         list = ['LogisticRegression',
-                'RandomForest', 'GradientBoosting', 'SVM', 'OneClassSVM',
+                'RandomForest', 'GradientBoosting', 'SVM',
                 'DecisionTree', 'AdaBoost', 'NaiveBayes', 'GaussianProcess', 'MLP',
-                'KNeighbors', 'QuadraticDiscriminant']
+                'KNeighbors', 'QuadraticDiscriminant', 'Dummy']
         return list
