@@ -176,8 +176,6 @@ def tune_naive_bayes(x, y):
     print("accuracy :", model_cv.best_score_)
 
 
-########################
-## COMMENT DATA
 
 model_exec = ModelExec(include_comments=False, include_long_code=True)
 comments = model_exec.data['comment']
@@ -185,5 +183,5 @@ comments = model_exec.vectorise_comment_data(comments, comments)
 x = comments[0]
 y = model_exec.data['non-information']
 
-
+# exchange with a different function if needed to tune a different model
 tune_ada_boost(x, y)

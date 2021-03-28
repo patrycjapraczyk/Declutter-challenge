@@ -16,7 +16,13 @@ class ScoreMetrics:
         print('Confusion matrix: \n' + str(confusion_matrix(y_test, y_pred)))
 
     @staticmethod
-    def get_scores(name, y_test, y_pred):
+    def get_scores(name: str, y_test, y_pred) -> pd.DataFrame:
+        """
+        :param name: the name of the classifier tested
+        :param y_test
+        :param y_pred
+        :return: a dataframe with various score metrics
+        """
         accuracy = accuracy_score(y_test, y_pred)
         precision = precision_score(y_test, y_pred)
         recall = recall_score(y_test, y_pred)

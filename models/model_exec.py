@@ -16,12 +16,13 @@ from scipy import sparse
 
 
 class ModelExec:
-    def __init__(self, include_comments=False, include_long_code=False, comment_vectoriser='BOW'):
+    def __init__(self, comment_vectoriser='BOW', imbalance_sampling=None):
+        self.imbalance_sampling = imbalance_sampling
         self.data = DataLoader.load_data(load_code_longer=True)
-        self.data = self.preprocess_comment_data(self.data)
+        self.data = self.preprocess_data(self.data)
         self.comment_vectoriser = comment_vectoriser
 
-    def preprocess_comment_data(self, data):
+    def preprocess_data(self, data):
         data['comment'] = data['comment'].apply(str)
         data['comment'] = data['comment'].apply(DataProcesser.preprocess)
         data['code'] = data['code'].apply(str)
@@ -29,11 +30,18 @@ class ModelExec:
         return data
 
     def split_data(self):
+        """
+        splits data into test and train set with the proportions of 75% and 25%
+        """
         x_train, x_test, y_train, y_test = train_test_split(
             self.data, self.data['non-information'], test_size=0.25, random_state=1000)
         return {'x_train': x_train, 'x_test': x_test, 'y_train': y_train, 'y_test': y_test}
 
     def kfold_validate(self, splits, repeat):
+        """
+        Returns predictions from a repeated k-fold split
+        Used for statistical tests
+        """
         model_names = ModelFactory.get_models_list()
         result = pd.DataFrame(columns=["actual"] + model_names)
         for i in range(0, repeat):
@@ -47,6 +55,7 @@ class ModelExec:
                 features_train = self.extract_features(train_data)
                 features_test = self.combine_features(features_test, comments_only=True)
                 features_train = self.combine_features(features_train, comments_only=True)
+
                 data = {'actual': y_test.tolist() }
                 for model_name in model_names:
                     y_pred = self.execute_model_data(model_name, features_train, y_train, features_test)
@@ -56,6 +65,9 @@ class ModelExec:
         return result
 
     def kfold_split(self, folds_split, w1, w2, data):
+        """
+        Executes k-fold procedure on models of all types and prints final averaged results for all models.
+        """
         i = 1
         kFold = KFold(n_splits=folds_split, shuffle=True, random_state=None)
         model_list = ModelFactory.get_models_list()
@@ -68,27 +80,21 @@ class ModelExec:
         for train_index, test_index in kFold.split(self.data):
             train_data = data.iloc[train_index]
             test_data = data.iloc[test_index]
-
             features_test = self.extract_features(test_data)
             features_train = self.extract_features(train_data)
-
             comment_vectorised = self.vectorise_comment_data(features_train[4], features_test[4])
             comments_train = comment_vectorised[0]
             comments_test = comment_vectorised[1]
-
             features_test = self.combine_features(features_test, comments_only=False)
             features_train = self.combine_features(features_train, comments_only=False)
-
             y_train = train_data['non-information']
             y_test = test_data['non-information']
-
             ensemble_result = self.ensemble_model(features_train, features_test,
                                                   comments_train, comments_test, y_train,
                                                   y_test, w1, w2)
             res = self.compare_models(comments_train, comments_test, train_data['non-information'],
                                        test_data['non-information'])
             counter = 0
-            #
             for index, row in res.iterrows():
                 result.iloc[counter]['accuracy'].append(row['accuracy'])
                 result.iloc[counter]['precision'].append(row['precision'])
@@ -106,8 +112,12 @@ class ModelExec:
             result.iloc[counter]['matthews_corrcoef'].append(ensemble_result['matthews_corrcoef'][0])
             result.iloc[counter]['balanced_accuracy'].append(ensemble_result['balanced_accuracy'][0])
             result.iloc[counter]['confusion_matrix'].append(ensemble_result['confusion_matrix'][0])
-        #
+
         print('K fold')
+        self.print_kfold_results(result)
+        return result
+
+    def print_kfold_results(self, result):
         for index, row in result.iterrows():
             print(row['name'])
             acc = np.mean(row['accuracy'])
@@ -135,35 +145,10 @@ class ModelExec:
             confusion_matrix = [[tn, fp], [fn, tp]]
             print('Confusion_matrix: \n ' + str(confusion_matrix) + '\n')
 
-            # print(ensemble_result['name'])
-            # acc = np.mean(ensemble_result['accuracy'])
-            # print('Accuracy ' + str(acc))
-            # precision = np.mean(ensemble_result['precision'])
-            # print('Precision ' + str(precision))
-            # recall = np.mean(ensemble_result['recall'])
-            # print('Recall ' + str(recall))
-            # f1 = np.mean(ensemble_result['f1'])
-            # print('F1 ' + str(f1))
-            # balanced_accuracy_score = np.mean(ensemble_result['balanced_accuracy'])
-            # print('balanced_accuracy_score ' + str(balanced_accuracy_score))
-            # matthews_corrcoef = np.mean(ensemble_result['matthews_corrcoef'])
-            # print('Matthews_corrcoef ' + str(matthews_corrcoef))
-            # confusion_matrix = ensemble_result['confusion_matrix']
-            # tn = 0
-            # fn = 0
-            # fp = 0
-            # tp = 0
-            # for curr in confusion_matrix:
-            #     tn += curr[0][0]
-            #     fn += curr[1][0]
-            #     fp += curr[0][1]
-            #     tp += curr[1][1]
-            # confusion_matrix = [[tn, fp], [fn, tp]]
-            # print('Confusion_matrix: \n ' + str(confusion_matrix) + '\n')
-        print(result.head())
-        return result
-
     def extract_features(self, x):
+        """
+        prepares all features and returns them as an array
+        """
         length_data = x['comment'].apply(lambda c: len(c.split())).to_numpy()
         stopwords_num = x['comment'].apply(FeatureHelper.get_stop_words_num).to_numpy()
         functional_types = x['functional_type'].to_numpy()
@@ -179,32 +164,42 @@ class ModelExec:
             type='COSINE_TFIDF'),
                                           axis=1).to_numpy()
 
-        comment = x['comment']
+        comment = x['comment'].to_numpy()
         features = [length_data, stopwords_num, code_comment_similarity_cosine, functional_types, comment]
         return features
 
     def vectorise_comment_data(self, comments_train, comment_test):
-        text_representation = TextRepresentationFactory.get_text_representation(self.comment_vectoriser , comments_train)
+        text_representation = TextRepresentationFactory.get_text_representation(self.comment_vectoriser, comments_train)
         x_train_comments = text_representation.vectorize(comments_train)
         x_test_comments = text_representation.vectorize(comment_test)
+        if self.comment_vectoriser != 'W2V':
+            x_train_comments = x_train_comments.toarray()
+            x_test_comments = x_test_comments.toarray()
         return (x_train_comments, x_test_comments)
 
     def combine_features(self, feature_list: list, comments_only: bool) -> pd.DataFrame:
+        """
+        Combines features into a single matrix, features are stacked together horizontally
+        """
         features = scale(feature_list[0].reshape((feature_list[0].shape[0], 1)))
         features = scale(np.hstack((features, feature_list[1].reshape(feature_list[1].shape[0], 1))))
         features = scale(np.hstack((features, feature_list[2].reshape(feature_list[2].shape[0], 1))))
         features = scale(np.hstack((features, feature_list[3].reshape(feature_list[3].shape[0], 1))))
-        #features = scale(np.hstack((features, feature_list[4].reshape(feature_list[4].shape[0], 1))))
         if comments_only:
-            comments = feature_list[4].to_numpy()
+            comments = feature_list[4]
             features = comments
         return features
 
     def compare_models(self, features_train, features_test, y_train, y_test):
+        """
+        Executes models of all types implemented in this project and prints their results
+        """
         x_train = features_train
-        #x_train, y_train = ImbalanceSampling.get_sampled_data('ADASYN', x_train, y_train)
         model_names = ModelFactory.get_models_list()
         score_df = pd.DataFrame(columns=['name', 'accuracy', 'precision', 'recall', 'f1'])
+        if self.imbalance_sampling:
+            x_train, y_train = ImbalanceSampling.get_sampled_data(self.imbalance_sampling, x_train, y_train)
+
         for name in model_names:
             model = ModelFactory.get_model(name, optimised=False)
             model.fit_model(x_train, y_train)
@@ -218,7 +213,7 @@ class ModelExec:
 
     def ensemble_model(self, features_train, features_test, comments_train, comments_test, y_train, y_test, w1, w2):
         score = Ensemble.get_ensemble_score('AVERAGING', comments_train, features_train,
-                                            comments_test, features_test, y_train, y_test, w1, w2)
+                                            comments_test, features_test, y_train, y_test, w1, w2, self.imbalance_sampling)
         return score
 
     def execute_model_data(self, name, x_train, y_train, x_test):
@@ -227,7 +222,7 @@ class ModelExec:
         y_pred = model.predict(x_test)
         return y_pred
 
-    def execute_model(self, name):
+    def execute_model(self, name, imbalance_sampling=None):
         model = ModelFactory.get_model(name)
         split_data = self.split_data()
         features_train = self.extract_features(split_data['x_train'])
@@ -236,8 +231,8 @@ class ModelExec:
         features_test = self.combine_features(features_test, False)
         x_train = features_train
         y_train = split_data['y_train']
-        #x_train, y_train = ImbalanceSampling.get_sampled_data('SMOTE', x_train,
-         #                                                     y_train)
+        if imbalance_sampling:
+            x_train, y_train = ImbalanceSampling.get_sampled_data(imbalance_sampling, x_train, y_train)
         model.fit_model(x_train, y_train)
         y_pred = model.predict(features_test)
         ScoreMetrics.print_scores(split_data['y_test'], y_pred)
@@ -245,17 +240,17 @@ class ModelExec:
 
     def test_python_data(self):
         python_data = DataLoader.load_data_python()
-        python_data = self.preprocess_comment_data(python_data)
+        python_data = self.preprocess_data(python_data)
         features_train = self.extract_features(self.data)
         features_test = self.extract_features(python_data)
         comment_vectorised = self.vectorise_comment_data(features_train[4], features_test[4])
-        comments_train = comment_vectorised[0].toarray()
-        comments_test = comment_vectorised[1].toarray()
+        comments_train = comment_vectorised[0]
+        comments_test = comment_vectorised[1]
         features_test = self.combine_features(features_test, comments_only=False)
         features_train = self.combine_features(features_train, comments_only=False)
         y_train = self.data['non-information']
         y_test = python_data['non-information']
-        #self.compare_models(features_train, features_test, y_train, y_test)
+        print("Testing modeels against Python data")
         self.compare_models(comments_train, comments_test, y_train, y_test)
         ensemble_result = self.ensemble_model(features_train, features_test,
                                               comments_train, comments_test, y_train,
@@ -271,10 +266,3 @@ class ModelExec:
         print(ensemble_result)
 
 
-exec = ModelExec(include_comments=False, include_long_code=True, comment_vectoriser='W2V')
-exec.kfold_split(10, 0.5454545454545454, 0.45454545454545453, exec.data)
-# 0.4602195752305369
-# [0.5714285714285715, 0.4285714285714286] --> balanced_accuracy_score 0.6892701005556102
-# Matthews_corrcoef 0.44160738322274184
-# [0.5333333333333333, 0.4666666666666666] --->
-#exec.test_python_data()

@@ -6,7 +6,6 @@ from models.gradient_boosting import GradientBoosting
 from models.decision_tree_classifier import DecisionTree
 from models.ada_boost import AdaBoost
 from models.SVM import SVM
-from models.one_class_SVM import OneClassSVMModel
 from models.gaussian_process import GaussianProcess
 from models.MLP import MLP
 from models.quadratic_discriminant_analysis import QuadraticDiscriminant

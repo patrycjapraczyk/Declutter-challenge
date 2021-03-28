@@ -84,7 +84,7 @@ class Test(TestCase):
         expected = "public static <A, B> MappedList<B, A> mapBacked(ObservableList<A> source, Function<A, B> mapper) {"
         self.assertEqual(expected, result)
         result = handle_block_comment("https://github.com/nnovielli/jabref/blob/master/src/main/java/org/jabref/model/TreeNode.java", 47)
-        self.assertEqual("private Consumer<T> onDescendantChanged = t -> {", result)
+        self.assertEqual("", result)
         result = handle_block_comment(
             "https://github.com/nnovielli/jabref/blob/master/src/main/java/org/jabref/gui/actions/OldCommandWrapperForActiveDatabase.java",
             12)
@@ -110,10 +110,8 @@ class Test(TestCase):
         self.assertEqual(True, result)
 
     def test_is_only_special_char(self):
-        result = is_only_special_char("")
-        self.assertEqual(True, result)
-        result = is_only_special_char("?}")
-        self.assertEqual(True, result)
+        self.assertEqual(True, is_only_special_char(""))
+        self.assertEqual(True, is_only_special_char("?}"))
         self.assertEqual(True, is_only_special_char(" "))
         self.assertEqual(False, is_only_special_char("hello }d."))
 

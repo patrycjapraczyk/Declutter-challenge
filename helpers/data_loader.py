@@ -3,15 +3,19 @@ import numpy as np
 
 
 class DataLoader:
-    TRAIN_DATA_PATH = "./../data/train_set_0520.csv"
-    CODE_PATH = "./../data/code_data.csv"
-    CODE_LONG_PATH = "./../data/code_javadoc.txt"
-    FUNCTIONAL_TYPES = "./../data/functional_types.csv"
-    PYTHON_DATA = "./../data/python_data.csv"
-
+    """
+     loads data from csv or text files needed to train the models or do data analysis,
+     the data is loaded into Pandas DataFrame format
+    """
+    TRAIN_DATA_PATH = "./data/train_set_0520.csv"
+    CODE_PATH = "./data/code_data.csv"
+    CODE_LONG_PATH = "./data/code_javadoc.txt"
+    FUNCTIONAL_TYPES = "./data/functional_types.csv"
+    PYTHON_DATA = "./data/python_data.csv"
 
     @staticmethod
     def load_longer_code():
+        """load code blocks from javadoc"""
         f = open(DataLoader.CODE_LONG_PATH, "r")
         Lines = f.readlines()
         code_long = []
@@ -32,6 +36,10 @@ class DataLoader:
 
     @staticmethod
     def load_data(load_code_longer=False) -> pd.DataFrame:
+        """"
+        loads all data from DeClutter challenge csv files into a single data frame
+        :param load_code_longer: False by default, if True, longer code blocks are loaded for javadoc comments
+        """
         data = DataLoader.load_csv_file(DataLoader.TRAIN_DATA_PATH, ['type', 'comment', 'non-information'])
         code = DataLoader.load_csv_file(DataLoader.CODE_PATH, ['code'])
         functional_types = DataLoader.load_csv_file(DataLoader.FUNCTIONAL_TYPES, ['functional_type'])
@@ -54,6 +62,9 @@ class DataLoader:
 
     @staticmethod
     def load_data_python() -> pd.DataFrame:
+        """
+        loads Python data from an additional validation dataset into a data frame
+        """
         data = DataLoader.load_csv_file(DataLoader.PYTHON_DATA, ['comment', 'non-information', 'code', 'functional_type'])
         DataLoader.apply_functional_types(data)
         data['code'] = data['code'].apply(str)

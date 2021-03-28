@@ -8,6 +8,10 @@ from text_representation.text_representation_factory import TextRepresentationFa
 class TextSimilarity:
     @staticmethod
     def get_similarity_score(s1: str, s2: str, type: str) -> int:
+        """
+        calculates the similarity score between s1 and s2
+        type can be ‘JACC’, ‘COSINE’ or ‘COSINE_TFIDF’
+        """
         measure_function = TextSimilarity.get_similarity_measure(type)
         return measure_function(s1, s2)
 

@@ -2,10 +2,12 @@ import pandas as pd
 from models.model_exec import ModelExec
 
 exec = ModelExec(include_comments=False, include_long_code=True)
-from mlxtend.evaluate import paired_ttest_5x2cv
 from statsmodels.stats.contingency_tables import mcnemar,cochrans_q
 from models.model_factory import ModelFactory
 
+
+# executes Cochran’s Q test on data from comparison of different models
+# with different text vectorising methods using k-fold validation,
 
 model_names = ModelFactory.get_models_list()
 exec = ModelExec(include_comments=False, include_long_code=True, comment_vectoriser='BOW')

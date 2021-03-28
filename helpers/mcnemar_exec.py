@@ -6,6 +6,8 @@ from mlxtend.evaluate import paired_ttest_5x2cv
 from statsmodels.stats.contingency_tables import mcnemar,cochrans_q
 from models.model_factory import ModelFactory
 
+# executes McNemar test to check the variance
+# between results from k-fold validation of different models
 
 model_names = ModelFactory.get_models_list()
 result = exec.kfold_validate(2, 10)

@@ -27,7 +27,7 @@ class TestDataProcesser(TestCase):
         dp = DataProcesser()
         data = '@Override this'
         result = dp.preprocess(data)
-        self.assertEqual('thi', result)
+        self.assertEqual('', result)
 
     def test_extract_camel_case(self):
         dp = DataProcesser()
