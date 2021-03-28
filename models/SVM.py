@@ -3,11 +3,14 @@ from sklearn.svm import SVC
 
 
 class SVM(AbstractModel):
-    def __init__(self):
-        self.create_model()
+    def __init__(self, optimised):
+        self.create_model(optimised)
 
-    def create_model(self):
-        self.model = SVC(random_state=42, probability=True, C=1000, gamma=0.001, kernel='rbf')
+    def create_model(self, optimised):
+        if optimised:
+            self.model = SVC(random_state=42, probability=True, C=1000, gamma=0.001, kernel='rbf')
+        else:
+            self.model = SVC(probability=True)
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)

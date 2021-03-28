@@ -5,12 +5,15 @@ import numpy as np
 
 
 class AdaBoost(AbstractModel):
-    def __init__(self):
-        self.create_model()
+    def __init__(self, optimised=True):
+        self.create_model(optimised)
 
-    def create_model(self):
+    def create_model(self, optimised):
         #tuned hpyerparameters :(best parameters)  {'learning_rate': 0.1, 'n_estimators': 172, 'random_state': 0}
-        self.model = AdaBoostClassifier(learning_rate=0.1, n_estimators=170, random_state=0)
+        if optimised:
+            self.model = AdaBoostClassifier(learning_rate=0.1, n_estimators=170, random_state=0)
+        else:
+            self.model = AdaBoostClassifier()
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)

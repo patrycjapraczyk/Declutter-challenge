@@ -5,12 +5,15 @@ import numpy as np
 
 
 class MLP(AbstractModel):
-    def __init__(self):
-        self.create_model()
+    def __init__(self, optimised=True):
+        self.create_model(optimised)
 
-    def create_model(self):
+    def create_model(self, optimised):
         #tuned hpyerparameters :(best parameters)  {'activation': 'tanh', 'alpha': 0.0001, 'hidden_layer_sizes': (10, 30, 10), 'learning_rate': 'adaptive', 'solver': 'sgd'}
-        self.model = MLPClassifier(activation='tanh', alpha=0.0001, hidden_layer_sizes=(20,), learning_rate='adaptive', solver='adam')
+        if optimised:
+            self.model = MLPClassifier(activation='tanh', alpha=0.0001, hidden_layer_sizes=(20,), learning_rate='adaptive', solver='adam')
+        else:
+            self.model = MLPClassifier()
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)

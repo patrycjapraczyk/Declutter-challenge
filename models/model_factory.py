@@ -16,33 +16,33 @@ from models.dummy import Dummy
 
 class ModelFactory:
     @staticmethod
-    def get_model(format, text=False) -> AbstractModel:
+    def get_model(format, optimised=True) -> AbstractModel:
         if format == 'LogisticRegression':
-            return LogisticRegressionModel()
+            return LogisticRegressionModel(optimised)
         if format == 'RandomForest':
-            return RandomForestModel()
+            return RandomForestModel(optimised)
         if format == 'NaiveBayes':
-            return NaiveBayes()
+            return NaiveBayes(optimised)
         if format == 'GradientBoosting':
-            return GradientBoosting()
+            return GradientBoosting(optimised)
         if format == 'SVM':
-            return SVM()
+            return SVM(optimised)
         if format == 'OneClassSVM':
-            return OneClassSVMModel()
+            return OneClassSVMModel(optimised)
         if format == 'DecisionTree':
-            return DecisionTree(text)
+            return DecisionTree(optimised)
         if format == 'AdaBoost':
-            return AdaBoost()
+            return AdaBoost(optimised)
         if format == 'GaussianProcess':
-            return GaussianProcess()
+            return GaussianProcess(optimised)
         if format == 'MLP':
-            return MLP()
+            return MLP(optimised)
         if format == 'KNeighbors':
-            return KNeighbors()
+            return KNeighbors(optimised)
         if format == 'QuadraticDiscriminant':
-            return QuadraticDiscriminant()
+            return QuadraticDiscriminant(optimised)
         if format == 'Dummy':
-            return Dummy()
+            return Dummy(optimised)
         else:
             raise ValueError(format)
 

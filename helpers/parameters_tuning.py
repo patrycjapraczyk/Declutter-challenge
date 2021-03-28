@@ -13,7 +13,7 @@ from models.model_exec import ModelExec
 
 model_exec = ModelExec(include_comments=False, include_long_code=True)
 features = model_exec.extract_features(model_exec.data)
-features = model_exec.combine_features(features, include_comments=False)
+features = model_exec.combine_features(features, comments_only=False)
 x = features
 y = model_exec.data['non-information']
 

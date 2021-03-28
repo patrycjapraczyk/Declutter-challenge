@@ -5,11 +5,11 @@ import numpy as np
 
 
 class DecisionTree(AbstractModel):
-    def __init__(self, text=False):
-        self.create_model()
+    def __init__(self, text=False, optimised=True):
+        self.create_model(optimised)
 
-    def create_model(self, text=False):
-        if(text):
+    def create_model(self, optimised=True):
+        if(optimised):
             self.model = DecisionTreeClassifier(criterion='gini', max_depth=110,
                                                 min_samples_leaf=1, min_samples_split=0.1, min_weight_fraction_leaf=0)
         else:

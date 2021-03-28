@@ -33,13 +33,14 @@ def grid_search():
         exec = ModelExec(include_comments=False, include_long_code=True)
         score = exec.kfold_split(10, weights[0], weights[1])
         score = score[score['name'] == 'ensemble']
-        score = score['f1'].to_numpy()[0]
+        score = score['balanced_accuracy'].to_numpy()[0]
         score = np.mean(score)
 
         #score = evaluate_ensemble(members, weights, testX, testy)
         if score > best_score:
             best_score, best_weights = score, weights
             print('>%s %.3f' % (best_weights, best_score))
+    print(best_score)
     return list(best_weights)
 
 print(grid_search())

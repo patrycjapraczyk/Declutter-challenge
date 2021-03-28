@@ -5,10 +5,10 @@ import numpy as np
 
 
 class QuadraticDiscriminant(AbstractModel):
-    def __init__(self):
-        self.create_model()
+    def __init__(self, optimised):
+        self.create_model(optimised)
 
-    def create_model(self):
+    def create_model(self, optimised):
         self.model = QuadraticDiscriminantAnalysis()
 
     def fit_model(self, x_train, y_train):

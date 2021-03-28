@@ -3,11 +3,14 @@ from sklearn.linear_model import LogisticRegression
 
 
 class LogisticRegressionModel(AbstractModel):
-    def __init__(self):
-        self.create_model()
+    def __init__(self, optimised=True):
+        self.create_model(optimised)
 
-    def create_model(self):
-        self.model = LogisticRegression(C=1.7575106248547894, penalty='l2')
+    def create_model(self, optimised):
+        if optimised:
+            self.model = LogisticRegression(C=1.7575106248547894, penalty='l2')
+        else:
+            self.model = LogisticRegression()
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)

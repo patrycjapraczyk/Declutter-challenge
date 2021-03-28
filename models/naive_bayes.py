@@ -3,10 +3,10 @@ from sklearn.naive_bayes import GaussianNB
 
 
 class NaiveBayes(AbstractModel):
-    def __init__(self):
-        self.create_model()
+    def __init__(self, optimised):
+        self.create_model(optimised)
 
-    def create_model(self):
+    def create_model(self, optimised):
         self.model = GaussianNB()
 
     def fit_model(self, x_train, y_train):

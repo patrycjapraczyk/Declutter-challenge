@@ -3,12 +3,15 @@ from sklearn.ensemble import GradientBoostingClassifier
 
 
 class GradientBoosting(AbstractModel):
-    def __init__(self):
-        self.create_model()
+    def __init__(self, optimised=True):
+        self.create_model(optimised)
 
-    def create_model(self):
+    def create_model(self, optimised):
         #'learning_rate': 0.01, 'loss': 'exponential', 'max_depth': 80, 'min_samples_leaf': 80, 'min_samples_split': 600, 'subsample': 0.6, 'warm_start': False
-        self.model = GradientBoostingClassifier(learning_rate=0.1, min_samples_split=600, min_samples_leaf=80, n_estimators=660, max_depth=80, subsample=0.7, warm_start=False)
+        if optimised:
+            self.model = GradientBoostingClassifier(learning_rate=0.1, min_samples_split=600, min_samples_leaf=80, n_estimators=660, max_depth=80, subsample=0.7, warm_start=False)
+        else:
+            self.model = GradientBoostingClassifier()
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)

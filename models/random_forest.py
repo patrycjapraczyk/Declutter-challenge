@@ -5,13 +5,16 @@ import numpy as np
 
 
 class RandomForestModel(AbstractModel):
-    def __init__(self):
-        self.create_model()
+    def __init__(self, optimised=True):
+        self.create_model(optimised)
 
-    def create_model(self):
+    def create_model(self, optimised):
         #'bootstrap': True, 'max_depth': 80, 'max_features': 2, 'min_samples_leaf': 3, 'min_samples_split': 8, 'n_estimators': 100
-        self.model = RandomForestClassifier(bootstrap=True, max_depth=90, max_features=2, min_samples_leaf=5,
+        if optimised:
+            self.model = RandomForestClassifier(bootstrap=True, max_depth=90, max_features=2, min_samples_leaf=5,
                                             min_samples_split=8, n_estimators=200, random_state=42)
+        else:
+            self.model = RandomForestClassifier()
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)

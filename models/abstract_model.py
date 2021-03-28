@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 class AbstractModel(ABC):
     @abstractmethod
-    def create_model(self):
+    def create_model(self, optimised=False):
         pass
 
     @abstractmethod

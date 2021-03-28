@@ -16,9 +16,10 @@ from scipy import sparse
 
 
 class ModelExec:
-    def __init__(self, include_comments=False, include_long_code=False):
+    def __init__(self, include_comments=False, include_long_code=False, comment_vectoriser='BOW'):
         self.data = DataLoader.load_data(load_code_longer=True)
         self.data = self.preprocess_comment_data(self.data)
+        self.comment_vectoriser = comment_vectoriser
 
     def preprocess_comment_data(self, data):
         data['comment'] = data['comment'].apply(str)
@@ -44,8 +45,8 @@ class ModelExec:
                 y_test = test_data['non-information']
                 features_test = self.extract_features(test_data)
                 features_train = self.extract_features(train_data)
-                features_test = self.combine_features(features_test, include_comments=False)
-                features_train = self.combine_features(features_train, include_comments=False)
+                features_test = self.combine_features(features_test, comments_only=True)
+                features_train = self.combine_features(features_train, comments_only=True)
                 data = {'actual': y_test.tolist() }
                 for model_name in model_names:
                     y_pred = self.execute_model_data(model_name, features_train, y_train, features_test)
@@ -54,7 +55,7 @@ class ModelExec:
                 result = result.append(df)
         return result
 
-    def kfold_split(self, folds_split, w1, w2):
+    def kfold_split(self, folds_split, w1, w2, data):
         i = 1
         kFold = KFold(n_splits=folds_split, shuffle=True, random_state=None)
         model_list = ModelFactory.get_models_list()
@@ -65,8 +66,8 @@ class ModelExec:
                      'confusion_matrix'], data=vals)
 
         for train_index, test_index in kFold.split(self.data):
-            train_data = self.data.iloc[train_index]
-            test_data = self.data.iloc[test_index]
+            train_data = data.iloc[train_index]
+            test_data = data.iloc[test_index]
 
             features_test = self.extract_features(test_data)
             features_train = self.extract_features(train_data)
@@ -75,16 +76,19 @@ class ModelExec:
             comments_train = comment_vectorised[0]
             comments_test = comment_vectorised[1]
 
-            features_test = self.combine_features(features_test, include_comments=False)
-            features_train = self.combine_features(features_train, include_comments=False)
+            features_test = self.combine_features(features_test, comments_only=False)
+            features_train = self.combine_features(features_train, comments_only=False)
+
+            y_train = train_data['non-information']
+            y_test = test_data['non-information']
 
             ensemble_result = self.ensemble_model(features_train, features_test,
-                                                  comments_train, comments_test, train_data['non-information'],
-                                                  test_data['non-information'], 0.5714285714285715, 0.4285714285714286)
-            res = self.compare_models(features_train, features_test, train_data['non-information'],
-                                      test_data['non-information'])
+                                                  comments_train, comments_test, y_train,
+                                                  y_test, w1, w2)
+            res = self.compare_models(comments_train, comments_test, train_data['non-information'],
+                                       test_data['non-information'])
             counter = 0
-
+            #
             for index, row in res.iterrows():
                 result.iloc[counter]['accuracy'].append(row['accuracy'])
                 result.iloc[counter]['precision'].append(row['precision'])
@@ -94,15 +98,15 @@ class ModelExec:
                 result.iloc[counter]['balanced_accuracy'].append(row['balanced_accuracy'])
                 result.iloc[counter]['confusion_matrix'].append(row['confusion_matrix'])
                 counter += 1
-
-            result.iloc[counter]['accuracy'].append(ensemble_result['accuracy'][0])
+            acc = ensemble_result['accuracy'][0]
+            result.iloc[counter]['accuracy'].append(acc)
             result.iloc[counter]['precision'].append(ensemble_result['precision'][0])
             result.iloc[counter]['recall'].append(ensemble_result['recall'][0])
             result.iloc[counter]['f1'].append(ensemble_result['f1'][0])
             result.iloc[counter]['matthews_corrcoef'].append(ensemble_result['matthews_corrcoef'][0])
             result.iloc[counter]['balanced_accuracy'].append(ensemble_result['balanced_accuracy'][0])
             result.iloc[counter]['confusion_matrix'].append(ensemble_result['confusion_matrix'][0])
-
+        #
         print('K fold')
         for index, row in result.iterrows():
             print(row['name'])
@@ -131,6 +135,32 @@ class ModelExec:
             confusion_matrix = [[tn, fp], [fn, tp]]
             print('Confusion_matrix: \n ' + str(confusion_matrix) + '\n')
 
+            # print(ensemble_result['name'])
+            # acc = np.mean(ensemble_result['accuracy'])
+            # print('Accuracy ' + str(acc))
+            # precision = np.mean(ensemble_result['precision'])
+            # print('Precision ' + str(precision))
+            # recall = np.mean(ensemble_result['recall'])
+            # print('Recall ' + str(recall))
+            # f1 = np.mean(ensemble_result['f1'])
+            # print('F1 ' + str(f1))
+            # balanced_accuracy_score = np.mean(ensemble_result['balanced_accuracy'])
+            # print('balanced_accuracy_score ' + str(balanced_accuracy_score))
+            # matthews_corrcoef = np.mean(ensemble_result['matthews_corrcoef'])
+            # print('Matthews_corrcoef ' + str(matthews_corrcoef))
+            # confusion_matrix = ensemble_result['confusion_matrix']
+            # tn = 0
+            # fn = 0
+            # fp = 0
+            # tp = 0
+            # for curr in confusion_matrix:
+            #     tn += curr[0][0]
+            #     fn += curr[1][0]
+            #     fp += curr[0][1]
+            #     tp += curr[1][1]
+            # confusion_matrix = [[tn, fp], [fn, tp]]
+            # print('Confusion_matrix: \n ' + str(confusion_matrix) + '\n')
+        print(result.head())
         return result
 
     def extract_features(self, x):
@@ -154,29 +184,29 @@ class ModelExec:
         return features
 
     def vectorise_comment_data(self, comments_train, comment_test):
-        text_representation = TextRepresentationFactory.get_text_representation('BOW', comments_train)
+        text_representation = TextRepresentationFactory.get_text_representation(self.comment_vectoriser , comments_train)
         x_train_comments = text_representation.vectorize(comments_train)
         x_test_comments = text_representation.vectorize(comment_test)
         return (x_train_comments, x_test_comments)
 
-    def combine_features(self, feature_list: list, include_comments: bool) -> pd.DataFrame:
+    def combine_features(self, feature_list: list, comments_only: bool) -> pd.DataFrame:
         features = scale(feature_list[0].reshape((feature_list[0].shape[0], 1)))
         features = scale(np.hstack((features, feature_list[1].reshape(feature_list[1].shape[0], 1))))
         features = scale(np.hstack((features, feature_list[2].reshape(feature_list[2].shape[0], 1))))
         features = scale(np.hstack((features, feature_list[3].reshape(feature_list[3].shape[0], 1))))
         #features = scale(np.hstack((features, feature_list[4].reshape(feature_list[4].shape[0], 1))))
-        if include_comments:
-            comments = feature_list[4]
-            features = sparse.hstack((comments, features))
+        if comments_only:
+            comments = feature_list[4].to_numpy()
+            features = comments
         return features
 
     def compare_models(self, features_train, features_test, y_train, y_test):
         x_train = features_train
-        x_train, y_train = ImbalanceSampling.get_sampled_data('SMOTEEN', x_train, y_train)
+        #x_train, y_train = ImbalanceSampling.get_sampled_data('ADASYN', x_train, y_train)
         model_names = ModelFactory.get_models_list()
         score_df = pd.DataFrame(columns=['name', 'accuracy', 'precision', 'recall', 'f1'])
         for name in model_names:
-            model = ModelFactory.get_model(name)
+            model = ModelFactory.get_model(name, optimised=False)
             model.fit_model(x_train, y_train)
             y_pred = model.predict(features_test)
             score = ScoreMetrics.get_scores(name, y_test, y_pred)
@@ -219,20 +249,32 @@ class ModelExec:
         features_train = self.extract_features(self.data)
         features_test = self.extract_features(python_data)
         comment_vectorised = self.vectorise_comment_data(features_train[4], features_test[4])
-        comments_train = comment_vectorised[0]
-        comments_test = comment_vectorised[1]
-        features_test = self.combine_features(features_test, include_comments=False)
-        features_train = self.combine_features(features_train, include_comments=False)
+        comments_train = comment_vectorised[0].toarray()
+        comments_test = comment_vectorised[1].toarray()
+        features_test = self.combine_features(features_test, comments_only=False)
+        features_train = self.combine_features(features_train, comments_only=False)
         y_train = self.data['non-information']
         y_test = python_data['non-information']
-        self.compare_models(features_train, features_test, y_train, y_test)
-
+        #self.compare_models(features_train, features_test, y_train, y_test)
+        self.compare_models(comments_train, comments_test, y_train, y_test)
         ensemble_result = self.ensemble_model(features_train, features_test,
                                               comments_train, comments_test, y_train,
-                                              y_test, 0.5714285714285715, 0.4285714285714286)
+                                              y_test, 0.5454545454545454, 0.45454545454545453)
+        print('ENSEMBLE')
+        print('acc: ', ensemble_result['accuracy'][0])
+        print('precision: ', ensemble_result['precision'][0])
+        print('recall: ', ensemble_result['recall'][0])
+        print('f1: ', ensemble_result['f1'][0])
+        print('matthews_corrcoef: ', ensemble_result['matthews_corrcoef'][0])
+        print('balanced_accuracy: ', ensemble_result['balanced_accuracy'][0])
+        print('confusion_matrix: ', ensemble_result['confusion_matrix'][0])
         print(ensemble_result)
 
 
-exec = ModelExec(include_comments=False, include_long_code=True)
-exec.kfold_split(10, 1, 1)
-# exec.test_python_data()
+exec = ModelExec(include_comments=False, include_long_code=True, comment_vectoriser='W2V')
+exec.kfold_split(10, 0.5454545454545454, 0.45454545454545453, exec.data)
+# 0.4602195752305369
+# [0.5714285714285715, 0.4285714285714286] --> balanced_accuracy_score 0.6892701005556102
+# Matthews_corrcoef 0.44160738322274184
+# [0.5333333333333333, 0.4666666666666666] --->
+#exec.test_python_data()

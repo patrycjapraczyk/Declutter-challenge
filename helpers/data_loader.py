@@ -5,14 +5,14 @@ import numpy as np
 class DataLoader:
     TRAIN_DATA_PATH = "./../data/train_set_0520.csv"
     CODE_PATH = "./../data/code_data.csv"
-    CODE_LONG_PATH = "./../data/code_data_long2.csv"
+    CODE_LONG_PATH = "./../data/code_javadoc.txt"
     FUNCTIONAL_TYPES = "./../data/functional_types.csv"
     PYTHON_DATA = "./../data/python_data.csv"
 
 
     @staticmethod
     def load_longer_code():
-        f = open("./../data/code.txt", "r")
+        f = open(DataLoader.CODE_LONG_PATH, "r")
         Lines = f.readlines()
         code_long = []
         for line in Lines:

@@ -5,11 +5,14 @@ import numpy as np
 
 
 class KNeighbors(AbstractModel):
-    def __init__(self):
-        self.create_model()
+    def __init__(self, optimised=True):
+        self.create_model(optimised)
 
-    def create_model(self):
-        self.model = KNeighborsClassifier(algorithm='auto', leaf_size=10, n_neighbors=14, p=2, weights='uniform')
+    def create_model(self, optimised):
+        if optimised:
+            self.model = KNeighborsClassifier(algorithm='auto', leaf_size=10, n_neighbors=14, p=2, weights='uniform')
+        else:
+            self.model = KNeighborsClassifier()
 
     def fit_model(self, x_train, y_train):
         self.model.fit(x_train, y_train)
