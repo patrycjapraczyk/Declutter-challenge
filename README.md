@@ -34,9 +34,9 @@ The main module with a few sample k-fold validation with ADASYN method and BOW a
 `python3 -m main`
 
 Running this file generates a few warnings- SettingWithCopyWarning and ConvergenceWarning. They do not affect the correctness of the program and can be ignored.
-The resulting scores from k-fold validation procedure will be printed in the console. 
-Please note that k-fold procedure will take a few minutes.
-In order to change the test options or run test against Python dataset, please follow instructions found in **main.py** file.
+The main module executes a k-fold validation with models trained on non-textual features and ensemble model of Bag of Words and non-textual features. The score metrics are printed in the
+console. Please note that k-fold procedure will take a few minutes. In order to change the test options or run the test against Python dataset, please follow
+instructions found in main.py file.
 
 Jupyter notebook files can be run by executing the following commands assuming that the terminal is open in the root directory of the project:
 
